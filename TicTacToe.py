@@ -52,6 +52,12 @@ class Game(object):
 		resetButton = tk.Button(frame4, width="16", height="3", text="Reset", command=self.reset_game)
 		resetButton.pack(side="right", padx=(310,0))
 
+	
+	def check_if_solved(self):
+		pass
+
+
+
 	def btn_pressed(self, n):
 		global turn
 		global count
@@ -61,6 +67,7 @@ class Game(object):
 			self.buttons[n-1].config(state="disabled")
 			turn = False
 			count += 1
+			self.check_if_solved()
 		else:
 			self.buttons[n-1].config(text="O")
 			self.buttons[n-1].config(state="disabled")
@@ -71,7 +78,7 @@ class Game(object):
 		global count
 		count = 1
 		for num in range(0, 9):
-			self.buttons[num].config(text="")
+			self.buttons[num].config(text="", state="normal")
 
 
 
