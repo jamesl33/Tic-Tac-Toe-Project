@@ -1,6 +1,8 @@
 # Tic-Tac-Toe-Project
-Running the game
-linux -- Make sure that you have got the package python3-tk installed and run the Tic-Tac-Toe.py file. 
+Running the game on
+Linux -- Make sure that you have got the package python3-tk / 
+tk installed 
+and run the Tic-Tac-Toe.py file. 
 
 Windows -- Run the Tic-Tac-Toe.py file. 
 
