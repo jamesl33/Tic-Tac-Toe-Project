@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from tkinter import messagebox
 class Game(object):
 	def __init__(self):
 		#turn counter to determine if player places X or O
@@ -9,6 +9,8 @@ class Game(object):
 		count = 1
 		global buttons
 		buttons = []
+		global values
+		values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
 	def draw_interface(self):
 		#create and draw the root window
 		root = tk.Tk()
@@ -53,28 +55,69 @@ class Game(object):
 		resetButton.pack(side="right", padx=(310,0))
 
 	
-	def check_if_solved(self):
-		pass
-
-
+	def check_if_solved(self, n):
+		if n == "X":
+			if values["1"] == "X" and values["2"] == "X" and values["3"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["4"] == "X" and values["5"] == "X" and values["6"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["6"] == "X" and values["7"] == "X" and values["8"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["1"] == "X" and values["4"] == "X" and values["7"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["2"] == "X" and values["5"] == "X" and values["8"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["3"] == "X" and values["7"] == "6" and values["9"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["1"] == "X" and values["5"] == "X" and values["9"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif values["7"] == "X" and values["5"] == "X" and values["3"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+		if n == "O":
+			if values["1"] == "O" and values["2"] == "O" and values["3"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["4"] == "O" and values["5"] == "O" and values["6"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["6"] == "O" and values["7"] == "O" and values["8"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["1"] == "O" and values["4"] == "O" and values["7"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["2"] == "O" and values["5"] == "O" and values["8"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["3"] == "O" and values["7"] == "6" and values["9"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["1"] == "O" and values["5"] == "O" and values["9"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif values["7"] == "O" and values["5"] == "O" and values["3"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
 
 	def btn_pressed(self, n):
 		global turn
 		global count
-		print(count)
-		if turn == True:			
+		# print(count)
+		if turn == True:
+			for key in values:
+				if key == str(n):
+					values[key] = "X"
 			self.buttons[n-1].config(text="X")
 			self.buttons[n-1].config(state="disabled")
 			turn = False
 			count += 1
-			self.check_if_solved()
+			self.check_if_solved("X")
 		else:
+			for key in values:
+				if key == str(n):
+					values[key] = "O"
 			self.buttons[n-1].config(text="O")
 			self.buttons[n-1].config(state="disabled")
 			turn = True
 			count += 1
+			self.check_if_solved("O")
+			# print(values)
 
 	def reset_game(self):
+		global values
+		values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
 		global count
 		count = 1
 		for num in range(0, 9):
