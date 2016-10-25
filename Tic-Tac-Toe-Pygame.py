@@ -1,8 +1,6 @@
-import pygame
-
+import pygame	
 class TicTacToe(object):
 	def __init__(self):
-		#init the pygame module
 		pygame.init()
 		#store the font that will be used in the variable "font"
 		font = pygame.font.SysFont("monospace", 15)
@@ -22,7 +20,8 @@ class TicTacToe(object):
 		pygame.draw.line(screen,(black),(0,400),(600,400), (5))
 		#game mainloop which deals with the running of the game
 		self.main_loop(gameState,font)
-	#main loop function to handle running of the game
+	"""Mainloop function which is a While loop that runs the whole time the game is running. This function controls finding hte location of the mouse when click
+	and where the counter should be placed"""	
 	def main_loop(self,gameState,font):
 		#start the mainloop depending on the if the variable "running" is True 
 		running = True
@@ -43,7 +42,8 @@ class TicTacToe(object):
 					running = False
 				for num in gameState:
 					pass
-	#function to find out where to place the counter. Returns location		
+	"""This functions takes the "x" "y" variables and returns where the counter should be placed on the grid. This function also updates the "gameState" list which
+	store the current state of the game """	
 	def placement_grid(self, x, y, gameState):
 		location = 0
 		if x <= 200:
