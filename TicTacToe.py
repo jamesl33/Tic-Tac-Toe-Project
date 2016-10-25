@@ -123,6 +123,8 @@ class Game(object):
 			# print(values)
 	#function to reset the game so the user can play the game several times without having to reopen the game
 	def reset_game(self):
+		global turn
+		turn = True
 		global values
 		#reset the values dictionary to default
 		values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
