@@ -1,18 +1,21 @@
 import tkinter as tk
 from tkinter import messagebox
+
 class Game(object):
 	def __init__(self):
-		#global variables for count, turn, buttons and values
-		global turn
-		global count
-		global buttons
-		global values
-		turn = True
-		count = 1
-		buttons = []
-		values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
+		#this turn variable is declared to allow the program to alternate between placing "X" or "O"
+		self.turn = True
+		#count variable to check if the game has ended
+		self.count = 1
+		#values list which allows me to apply the check if solved function. each number represents a place on the board
+		self.values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
+		#list to store button config to allow the program to change the button config later on
+		self.buttons = []
+		#when the Game object has been called draw the user interface using the draw_interface class
+		self.draw_interface()
 	
 	def draw_interface(self):
+		"""This is the function to draw the initial interface. This includes packing the buttons on the screen inside three frames"""
 		#create and draw the root window
 		root = tk.Tk()
 		#root windows title
@@ -29,8 +32,6 @@ class Game(object):
 		frame2.pack()
 		frame3 = tk.Frame(root, height="50", width="50")
 		frame3.pack()
-		#list to store button config to allow the program to change the button config later on
-		self.buttons = []
 		#loop to create three buttons in each frame each with the value from i
 		for i in range(1,10):
 			if i <= 3:
@@ -55,83 +56,79 @@ class Game(object):
 		#packing the reset button
 		resetButton.pack(side="right", padx=(310,0))
 
-	#function to check if there is a winner
-	#this function check 3 times accross 
-	#3 times down
-	#and in each direction diagonally
 	def check_if_solved(self, n):
+		"""This check function checks to see if there is a winner of the current game depending on wether its argument is "X" or "Y" This function will check the array and see who
+		if anybody has won the game. If there is a winner then it will pop up with a message box displaying who has won the game"""
 		if n == "X":
-			if values["1"] == "X" and values["2"] == "X" and values["3"] == "X":
+			if self.values["1"] == "X" and self.values["2"] == "X" and self.values["3"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["4"] == "X" and values["5"] == "X" and values["6"] == "X":
+			elif self.values["4"] == "X" and self.values["5"] == "X" and self.values["6"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["6"] == "X" and values["7"] == "X" and values["8"] == "X":
+			elif self.values["6"] == "X" and self.values["7"] == "X" and self.values["8"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["1"] == "X" and values["4"] == "X" and values["7"] == "X":
+			elif self.values["1"] == "X" and self.values["4"] == "X" and self.values["7"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["2"] == "X" and values["5"] == "X" and values["8"] == "X":
+			elif self.values["2"] == "X" and self.values["5"] == "X" and self.values["8"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["3"] == "X" and values["7"] == "6" and values["9"] == "X":
+			elif self.values["3"] == "X" and self.values["7"] == "6" and self.values["9"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["1"] == "X" and values["5"] == "X" and values["9"] == "X":
+			elif self.values["1"] == "X" and self.values["5"] == "X" and self.values["9"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif values["7"] == "X" and values["5"] == "X" and values["3"] == "X":
+			elif self.values["7"] == "X" and self.values["5"] == "X" and self.values["3"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
 		if n == "O":
-			if values["1"] == "O" and values["2"] == "O" and values["3"] == "O":
+			if self.values["1"] == "O" and self.values["2"] == "O" and self.values["3"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["4"] == "O" and values["5"] == "O" and values["6"] == "O":
+			elif self.values["4"] == "O" and self.values["5"] == "O" and self.values["6"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["6"] == "O" and values["7"] == "O" and values["8"] == "O":
+			elif self.values["6"] == "O" and self.values["7"] == "O" and self.values["8"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["1"] == "O" and values["4"] == "O" and values["7"] == "O":
+			elif self.values["1"] == "O" and self.values["4"] == "O" and self.values["7"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["2"] == "O" and values["5"] == "O" and values["8"] == "O":
+			elif self.values["2"] == "O" and self.values["5"] == "O" and self.values["8"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["3"] == "O" and values["7"] == "6" and values["9"] == "O":
+			elif self.values["3"] == "O" and self.values["7"] == "6" and self.values["9"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["1"] == "O" and values["5"] == "O" and values["9"] == "O":
+			elif self.values["1"] == "O" and self.values["5"] == "O" and self.values["9"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif values["7"] == "O" and values["5"] == "O" and values["3"] == "O":
+			elif self.values["7"] == "O" and self.values["5"] == "O" and self.values["3"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
 	#function to handle what happens when there is a button which is pressed
 	def btn_pressed(self, n):
+		"""Button pressed function. This function handles what happens to the buttons on the gui when they are pressed. This includes what text will be place on the button when it is pressed
+		This function in turn calls the check if solved function. It passes which player pressed a button last as an argument to allow the program to check who won."""
 		#references the global variables for use
-		global turn
-		global count
 		# print(count)
-		if turn == True:
-			for key in values:
+		if self.turn == True:
+			for key in self.values:
 				if key == str(n):
-					values[key] = "X"
+					self.values[key] = "X"
 			#change the config for the buttons to show who has taken there turn and where
 			self.buttons[n-1].config(text="X")
 			self.buttons[n-1].config(state="disabled")
-			turn = False
-			count += 1
+			self.turn = False
+			self.count += 1
 			#the check if solved function is called to see if there is a winner when the button is pressed
 			self.check_if_solved("X")
 		else:
-			for key in values:
+			for key in self.values:
 				if key == str(n):
-					values[key] = "O"
+					self.values[key] = "O"
 			self.buttons[n-1].config(text="O")
 			self.buttons[n-1].config(state="disabled")
-			turn = True
-			count += 1
+			self.turn = True
+			self.count += 1
 			self.check_if_solved("O")
 			# print(values)
-	#function to reset the game so the user can play the game several times without having to reopen the game
+
 	def reset_game(self):
-		global turn
-		turn = True
-		global values
+		"""Function to reset the game back to the state that it opens up in. This means if the user wants to restart playing the game they can.
+		This allows the user to restart playing the game without haing to reopen the game"""
+		self.turn = True
 		#reset the values dictionary to default
-		values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
-		global count
-		count = 1
+		self.values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
+		self.count = 1
 		#loop to reset the buttons values to default
 		for num in range(0, 9):
 			self.buttons[num].config(text="", state="normal")
 game = Game()
-game.draw_interface()
