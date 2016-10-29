@@ -41,20 +41,38 @@ class TicTacToe(object):
 					running = False
 
 	def place_counter(self, x, y, n):
-		print(self.gameState)
 		if self.turn == True:
 			label = self.font.render("X", 1, self.black)
 			self.screen.blit(label, (x, y))
 			for value in self.gameState:
 				if value == n:
 					self.gameState[value-1] = "X"
+			self.check_for_win("X")
 		else:
 			label = self.font.render("O", 1, self.black)
 			self.screen.blit(label, (x-4, y))
 			for value in self.gameState:
 				if value == n:
 					self.gameState[value-1] = "O"
-		print(self.gameState)
+			self.check_for_win("O")
+
+	def check_for_win(self, n):
+		if self.gameState[0] == n and self.gameState[1] == n and self.gameState[2] == n:
+			print(n, "Wins ")
+		elif self.gameState[3] == n and self.gameState[4] == n and self.gameState[5] == n:
+			print(n, "Wins ")
+		elif self.gameState[6] == n and self.gameState[7] == n and self.gameState[8] == n:
+			print(n, "Wins ")
+		elif self.gameState[0] == n and self.gameState[4] == n and self.gameState[8] == n:
+			print(n, "Wins ")
+		elif self.gameState[0] == n and self.gameState[3] == n and self.gameState[6] == n:
+			print(n, "Wins ")
+		elif self.gameState[1] == n and self.gameState[4] == "6" and self.gameState[7] == n:
+			print(n, "Wins ")
+		elif self.gameState[2] == n and self.gameState[5] == n and self.gameState[8] == n:
+			print(n, "Wins ")
+		elif self.gameState[2] == n and self.gameState[4] == n and self.gameState[6] == n:
+			print(n, "Wins")
 
 
 	"""This functions takes the "x" "y" variables and returns where the counter should be placed on the grid. This function also updates the "gameState" list which
