@@ -64,15 +64,15 @@ class Game(object):
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
 			elif self.values["4"] == "X" and self.values["5"] == "X" and self.values["6"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["6"] == "X" and self.values["7"] == "X" and self.values["8"] == "X":
+			elif self.values["7"] == "X" and self.values["8"] == "X" and self.values["9"] == "X":
+				messagebox.showinfo("We have a winner", "X Wins Well Done!")
+			elif self.values["1"] == "X" and self.values["5"] == "X" and self.values["9"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
 			elif self.values["1"] == "X" and self.values["4"] == "X" and self.values["7"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
 			elif self.values["2"] == "X" and self.values["5"] == "X" and self.values["8"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["3"] == "X" and self.values["7"] == "6" and self.values["9"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["1"] == "X" and self.values["5"] == "X" and self.values["9"] == "X":
+			elif self.values["3"] == "X" and self.values["6"] == "X" and self.values["9"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
 			elif self.values["7"] == "X" and self.values["5"] == "X" and self.values["3"] == "X":
 				messagebox.showinfo("We have a winner", "X Wins Well Done!")
@@ -81,15 +81,15 @@ class Game(object):
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
 			elif self.values["4"] == "O" and self.values["5"] == "O" and self.values["6"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["6"] == "O" and self.values["7"] == "O" and self.values["8"] == "O":
+			elif self.values["7"] == "O" and self.values["8"] == "O" and self.values["9"] == "O":
+				messagebox.showinfo("We have a winner", "O Wins Well Done!")
+			elif self.values["1"] == "O" and self.values["5"] == "O" and self.values["9"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
 			elif self.values["1"] == "O" and self.values["4"] == "O" and self.values["7"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
 			elif self.values["2"] == "O" and self.values["5"] == "O" and self.values["8"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["3"] == "O" and self.values["7"] == "6" and self.values["9"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["1"] == "O" and self.values["5"] == "O" and self.values["9"] == "O":
+			elif self.values["3"] == "O" and self.values["6"] == "O" and self.values["9"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
 			elif self.values["7"] == "O" and self.values["5"] == "O" and self.values["3"] == "O":
 				messagebox.showinfo("We have a winner", "O Wins Well Done!")
