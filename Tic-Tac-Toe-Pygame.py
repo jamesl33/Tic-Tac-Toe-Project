@@ -9,6 +9,7 @@ class TicTacToe(object):
 		self.screen = pygame.display.set_mode((600,1000))
 		self.screen.fill(self.white)
 		self.font = pygame.font.SysFont("monospace", 300)
+		self.font2 = pygame.font.SysFont("monospace", 40)
 		self.draw_grid()
 		self.main_loop()
 	"""Mainloop that handles running the game.This function calls
@@ -41,6 +42,9 @@ class TicTacToe(object):
 		pygame.draw.line(self.screen,(self.black),(400,620),(400,670), (1))
 		pygame.draw.line(self.screen,(self.black),(400,670),(600,670), (1))
 		pygame.draw.line(self.screen,(self.black),(400,620),(600,620), (1))
+
+		label = self.font2.render(("Reset Game"), 1, self.black)
+		self.screen.blit(label,(420, 632))
 	"""Reset game function. This function resets all of the values back to the same
 	values that the game has when it is first initialised. This function also redraws
 	the grid and buttons."""
@@ -56,21 +60,21 @@ class TicTacToe(object):
 	"""
 	def check_for_win(self, n):
 		if self.gameState[0] == n and self.gameState[1] == n and self.gameState[2] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[3] == n and self.gameState[4] == n and self.gameState[5] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[6] == n and self.gameState[7] == n and self.gameState[8] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[0] == n and self.gameState[4] == n and self.gameState[8] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[0] == n and self.gameState[3] == n and self.gameState[6] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[1] == n and self.gameState[4] == n and self.gameState[7] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[2] == n and self.gameState[5] == n and self.gameState[8] == n:
-			print(n, "Wins ")
+			self.win(n)
 		elif self.gameState[2] == n and self.gameState[4] == n and self.gameState[6] == n:
-			print(n, "Wins")
+			self.win(n)
 		"""Placement grid function determine where the "O" or "X" should be drawn on the screen
 		this is done by comparing the "X" and "Y" values"""
 	def placement_grid(self, x, y):
@@ -115,4 +119,9 @@ class TicTacToe(object):
 					self.gameState[value-1] = "O"
 					self.check_for_win("O")
 					self.turn = not self.turn
+	def win(self, n):
+		label = self.font2.render((n + " Wins"), 1, self.black)
+		self.screen.blit(label,(5, 620))
+		self.gameState = ["1", "2", "3", "4", "5", "6", "7", "8", "9",]
+
 game = TicTacToe()
