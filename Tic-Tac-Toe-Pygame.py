@@ -2,14 +2,18 @@ import pygame
 class TicTacToe(object):
 	def __init__(self):
 		pygame.init()
+		title_icon = pygame.image.load("TitleIcon.png")
+		pygame.display.set_icon(title_icon)
+		pygame.display.set_caption("Tic-Tac-Toe")
 		self.turn = True
 		self.white = [255,255,255]
 		self.black = [000,000,000]
 		self.gameState = [1,2,3,4,5,6,7,8,9]
-		self.screen = pygame.display.set_mode((600,1000))
+		self.screen = pygame.display.set_mode((400,550))
 		self.screen.fill(self.white)
-		self.font = pygame.font.SysFont("monospace", 300)
-		self.font2 = pygame.font.SysFont("monospace", 40)
+		self.font = pygame.font.SysFont("monospace", 100)
+		self.font2 = pygame.font.SysFont("monospace", 15)
+		self.font3 = pygame.font.SysFont("monospace", 30)
 		self.draw_grid()
 		self.main_loop()
 	"""Mainloop that handles running the game.This function calls
@@ -31,26 +35,27 @@ class TicTacToe(object):
 	"pygame.draw.line("Display",(Color),(X,Y),(X,Y),(With Value))" This is an example 
 	of how the pygame.draw.function is used."""
 	def draw_grid(self):
-		pygame.draw.line(self.screen,(self.black),(200,0),(200,600), (5))
-		pygame.draw.line(self.screen,(self.black),(400,0),(400,600), (5))
-		pygame.draw.line(self.screen,(self.black),(0,200),(600,200), (5))
-		pygame.draw.line(self.screen,(self.black),(0,400),(600,400), (5))
-		pygame.draw.line(self.screen,(self.black),(0,0),(0,600), (5))
-		pygame.draw.line(self.screen,(self.black),(0,0),(600,0), (5))
-		pygame.draw.line(self.screen,(self.black),(600,0),(600,600), (5))
-		pygame.draw.line(self.screen,(self.black),(0,600),(600,600), (5))
-		pygame.draw.line(self.screen,(self.black),(400,620),(400,670), (1))
-		pygame.draw.line(self.screen,(self.black),(400,670),(600,670), (1))
-		pygame.draw.line(self.screen,(self.black),(400,620),(600,620), (1))
+		pygame.draw.line(self.screen,(self.black),(50,50),(350,50), (5))
+		pygame.draw.line(self.screen,(self.black),(50,150),(350,150), (5))
+		pygame.draw.line(self.screen,(self.black),(50,250),(350,250), (5))
+		pygame.draw.line(self.screen,(self.black),(50,350),(350,350), (5))
+		pygame.draw.line(self.screen,(self.black),(50,50),(50,350), (5))
+		pygame.draw.line(self.screen,(self.black),(150,50),(150,350), (5))
+		pygame.draw.line(self.screen,(self.black),(250,50),(250,350), (5))
+		pygame.draw.line(self.screen,(self.black),(350,50),(350,350), (5))
+		pygame.draw.line(self.screen,(self.black),(250,375),(350,375), (1))
+		pygame.draw.line(self.screen,(self.black),(250,375),(250,400), (1))
+		pygame.draw.line(self.screen,(self.black),(250,400),(350,400), (1))
+		pygame.draw.line(self.screen,(self.black),(350,375),(350,400), (1))
 
 		label = self.font2.render(("Reset Game"), 1, self.black)
-		self.screen.blit(label,(420, 632))
+		self.screen.blit(label,(255,378))
 	"""Reset game function. This function resets all of the values back to the same
 	values that the game has when it is first initialised. This function also redraws
 	the grid and buttons."""
 	def reset_game(self, x, y):
-		if x <= 600 and x > 400:
-			if y <= 670 and y > 620:
+		if x <= 350 and x > 250:
+			if y <= 400 and y > 375:
 				self.gameState = [1,2,3,4,5,6,7,8,9]
 				self.turn = True
 				self.screen.fill(self.white)
@@ -78,27 +83,27 @@ class TicTacToe(object):
 		"""Placement grid function determine where the "O" or "X" should be drawn on the screen
 		this is done by comparing the "X" and "Y" values"""
 	def placement_grid(self, x, y):
-		if x <= 200:
-			if y < 200:
-				self.place_counter(25, 12, 1)
-			elif y >= 200 and y < 400:
-				self.place_counter(25, 212, 4)
-			elif y >= 400 and y <= 600:
-				self.place_counter(25, 412, 7)
-		elif x > 200 and x <= 400:
-			if y < 200:
-				self.place_counter(225, 12, 2)
-			elif y >= 200 and y < 400:
-				self.place_counter(225, 212, 5)
-			elif y >= 400 and y <= 600:
-				self.place_counter(225, 412, 8)
-		elif x > 400 and x <= 600:
-			if y < 200:
-				self.place_counter(425, 12, 3)
-			elif y >= 200 and y < 400:
-				self.place_counter(425, 212, 6)
-			elif y >= 400 and y <= 600:
-				self.place_counter(425, 412, 9)
+		if x <= 150:
+			if y < 150:
+				self.place_counter(70, 45, 1)
+			elif y >= 150 and y < 250:
+				self.place_counter(70, 145, 4)
+			elif y >= 250 and y <= 350:
+				self.place_counter(70, 245, 7)
+		elif x > 150 and x <= 250:
+			if y < 150:
+				self.place_counter(170, 45, 2)
+			elif y >= 150 and y < 250:
+				self.place_counter(170, 145, 5)
+			elif y >= 250 and y <= 350:
+				self.place_counter(170, 245, 8)
+		elif x > 250 and x <= 350:
+			if y < 150:
+				self.place_counter(270, 45, 3)
+			elif y >= 150 and y < 250:
+				self.place_counter(270, 145, 6)
+			elif y >= 250 and y <= 350:
+				self.place_counter(270, 245, 9)
 	"""This function handles the blitting of the "X" or "O" on the board. This is done
 	by blitting the label to the grid at the "x" and "y" coords give by the arguments "x" and 
 	"y"."""
@@ -120,8 +125,8 @@ class TicTacToe(object):
 					self.check_for_win("O")
 					self.turn = not self.turn
 	def win(self, n):
-		label = self.font2.render((n + " Wins"), 1, self.black)
-		self.screen.blit(label,(5, 620))
+		label = self.font3.render((n + " Wins!"), 1, self.black)
+		self.screen.blit(label,(145, 475))
 		self.gameState = ["1", "2", "3", "4", "5", "6", "7", "8", "9",]
 
 game = TicTacToe()
