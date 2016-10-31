@@ -1,9 +1,11 @@
 import pygame
-import random
+import AI
 class TicTacToe(object):
         def __init__(self):
                 pygame.init()
+                self.inMenu = False
                 self.turn = True
+                self.ai_mode = ""
                 self.count = 1
                 self.white = [255,255,255]
                 self.black = [000,000,000]
@@ -12,7 +14,7 @@ class TicTacToe(object):
                 self.screen.fill(self.white)
                 self.font = pygame.font.SysFont("monospace", 300)
                 self.font2 = pygame.font.SysFont("monospace", 40)
-                self.draw_grid()
+                self.font3 = pygame.font.SysFont("monospace", 60)
                 self.main_loop()
         """Mainloop that handles running the game.This function calls
         the other function when needed.When this loop ends the game 
@@ -20,17 +22,20 @@ class TicTacToe(object):
         def main_loop(self):
                 running = True
                 while running:
-                        if self.turn == False:
-                                self.random_ai()
-                                self.reset_game(x,y)
-                        pygame.display.update()
-                        for event in pygame.event.get():
-                                if event.type == pygame.MOUSEBUTTONUP:
-                                        x,y = event.pos
-                                        self.placement_grid(x,y)
-                                        self.reset_game(x,y)
-                                elif event.type == pygame.QUIT:
-                                        running = False
+                        if self.inMenu == True:
+                                self.draw_main_menu()
+                                pygame.display.update()
+                        else:
+                                self.draw_grid()
+                                pygame.display.update()
+                                for event in pygame.event.get():
+                                        if event.type == pygame.MOUSEBUTTONUP:
+                                                x,y = event.pos
+                                                self.placement_grid(x,y)
+                                                self.reset_game(x,y)
+                                                AI.Game_Ai(self)
+                                        elif event.type == pygame.QUIT:
+                                                running = False                     
         """draw grid function which is were each of the lines used to make the grid are
         declared and drawn. Each line has a beggining and end point and width.
         "pygame.draw.line("Display",(Color),(X,Y),(X,Y),(With Value))" This is an example 
@@ -47,8 +52,14 @@ class TicTacToe(object):
                 pygame.draw.line(self.screen,(self.black),(400,620),(400,670), (1))
                 pygame.draw.line(self.screen,(self.black),(400,670),(600,670), (1))
                 pygame.draw.line(self.screen,(self.black),(400,620),(600,620), (1))
-                label = self.font2.render(("Reset Game"), 1, self.black)
-                self.screen.blit(label,(420, 632))
+                resetLabel = self.font2.render(("Reset Game"), 1, self.black)
+                self.screen.blit(resetLabel,(420, 632))
+        """This function will draw the main menu which allows the user to define which mode they would
+        like to play. This includes choosing which Ai they would like to play against."""
+        def draw_main_menu(self):
+                label = self.font3.render("Main Menu", 1, self.black)
+                self.screen.blit(label, (220, 50))
+
         """Reset game function. This function resets all of the values back to the same
         values that the game has when it is first initialised. This function also redraws
         the grid and buttons."""
@@ -129,8 +140,7 @@ class TicTacToe(object):
                 self.screen.blit(label,(5, 620))
                 self.gameState = ["1", "2", "3", "4", "5", "6", "7", "8", "9",]
 
-        def random_ai(self):
-                randomX = random.randint(1, 600)
-                randomY = random.randint(1, 600)
-                self.placement_grid(randomX, randomY)
-game = TicTacToe()
+if __name__ == "__main__":
+        game = TicTacToe()
+        
+
