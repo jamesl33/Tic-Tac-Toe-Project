@@ -1,7 +1,11 @@
 import pygame
+import ai
+import math
 class TicTacToe(object):
 	def __init__(self):
 		pygame.init()
+		self.ai_turns = [[100,100], [100,200], [100,300], [200,100], [200,200], [200,300], [300,100], [300,200], [300,300]]
+		self.ai_mode = "easy"
 		self.turn = True
 		self.count = 1
 		self.white = [255,255,255]
@@ -23,6 +27,7 @@ class TicTacToe(object):
 				if event.type == pygame.MOUSEBUTTONUP:
 					x,y = event.pos
 					self.placement_grid(x,y)
+					# ai.ai(self)
 					self.reset_game(x,y)
 				elif event.type == pygame.QUIT:
 					pygame.display.quit()
@@ -68,6 +73,13 @@ class TicTacToe(object):
 						self.take_turn(275, 155, 6)
 					elif y >= 250 and y <= 350:
 						self.take_turn(275, 255, 9)
+		print(x)
+		print(y)
+		for index in self.ai_turns:
+			print(index)
+			if index == [x,y]:
+				self.ai_turns.remove(index)
+
 	def check_for_win(self, n):
 		if self.gameState[0] == n and self.gameState[1] == n and self.gameState[2] == n:
 			self.win(n)
@@ -100,13 +112,13 @@ class TicTacToe(object):
 			if type(self.gameState[n-1]) == int:
 				self.gameState[n-1] = "X"
 				label = self.font.render("X", 1, self.black)
-				self.screen.blit(label, (x+2, y))
+				self.screen.blit(label, (x, y))
 				self.check_for_win("X")
 		else:
 			if type(self.gameState[n-1]) == int:
 				self.gameState[n-1] = "O"
 				label = self.font.render("O", 1, self.black)
-				self.screen.blit(label, (x-6, y))
+				self.screen.blit(label, (x, y))
 				self.check_for_win("O")	
 		self.turn = not self.turn
 
