@@ -1,8 +1,9 @@
 import pygame
-import AI
+import ai
 class TicTacToe(object):
 	def __init__(self):
 		pygame.init()
+		self.ai_mode = "easy"
 		self.inMenu = False
 		self.turn = True
 		self.count = 1
@@ -32,6 +33,7 @@ class TicTacToe(object):
 					if event.type == pygame.MOUSEBUTTONUP:
 						x,y = event.pos
 						self.placement_grid(x,y)
+						ai.ai(self)
 						self.reset_game(x,y)
 					elif event.type == pygame.QUIT:
 						running = False                     
@@ -132,7 +134,6 @@ class TicTacToe(object):
 					self.screen.blit(label, (x+2, y))
 					self.gameState[value-1] = "X"
 					self.check_for_win("X")
-					self.turn = not self.turn
 		else:
 			for value in self.gameState:
 				if value == n and type(value) == int:
@@ -140,12 +141,14 @@ class TicTacToe(object):
 					self.screen.blit(label, (x-6, y))
 					self.gameState[value-1] = "O"
 					self.check_for_win("O")
-					self.turn = not self.turn
-
+		self.turn = not self.turn
 	def win(self, n):
 		label = self.font2.render((n + " Wins"), 1, self.black)
 		self.screen.blit(label,(5, 620))
 		self.gameState = ["1", "2", "3", "4", "5", "6", "7", "8", "9",]
+	
+
+
 
 if __name__ == "__main__":
 	game = TicTacToe()
