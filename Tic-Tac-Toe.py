@@ -114,13 +114,14 @@ class TicTacToe(object):
 				label = self.font.render("X", 1, self.black)
 				self.screen.blit(label, (x, y))
 				self.check_for_win("X")
+				self.turn = not self.turn
 		else:
 			if type(self.gameState[n-1]) == int:
 				self.gameState[n-1] = "O"
 				label = self.font.render("O", 1, self.black)
 				self.screen.blit(label, (x, y))
-				self.check_for_win("O")	
-		self.turn = not self.turn
+				self.check_for_win("O")
+				self.turn = not self.turn
 
 	def win(self, n):
 		label = self.font2.render((n + " Wins"), 1, self.black)
