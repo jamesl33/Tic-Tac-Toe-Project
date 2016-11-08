@@ -1,134 +1,162 @@
-import tkinter as tk
-from tkinter import messagebox
-
-class Game(object):
+import pygame 
+import ai
+class TicTacToe(object):
 	def __init__(self):
-		#this turn variable is declared to allow the program to alternate between placing "X" or "O"
-		self.turn = True
-		#count variable to check if the game has ended
-		self.count = 1
-		#values list which allows me to apply the check if solved function. each number represents a place on the board
-		self.values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
-		#list to store button config to allow the program to change the button config later on
-		self.buttons = []
-		#when the Game object has been called draw the user interface using the draw_interface class
-		self.draw_interface()
-	
-	def draw_interface(self):
-		"""This is the function to draw the initial interface. This includes packing the buttons on the screen inside three frames"""
-		#create and draw the root window
-		root = tk.Tk()
-		#root windows title
-		root.title("Tic-Tac-Toe")
-		#size of the root window
-		root.geometry("550x800")
-		#create label to push buttons down the root window
-		lbl = tk.Label(root, height="2")
-		lbl.pack()
-		#create the three frames to house the buttons
-		frame1 = tk.Frame(root, height="50", width="50")
-		frame1.pack()
-		frame2 = tk.Frame(root, height="50", width="50")
-		frame2.pack()
-		frame3 = tk.Frame(root, height="50", width="50")
-		frame3.pack()
-		#loop to create three buttons in each frame each with the value from i
-		for i in range(1,10):
-			if i <= 3:
-				btn = tk.Button(frame1, height="10", width="16", text=" ", \
-				command=lambda n=i: self.btn_pressed(n))
-				btn.pack(side="left")
-			elif i > 3 and i <=6:
-				btn = tk.Button(frame2, height="10", width="16", text=" ", \
-				command=lambda n=i: self.btn_pressed(n))
-				btn.pack(side="left")
-			else:
-				btn = tk.Button(frame3, height="10", width="16", text=" ", \
-				command=lambda n=i: self.btn_pressed(n))
-				btn.pack(side="left")
-			#frame to house the reset button 
-			frame4 = tk.Frame(root, height="0", width="200")
-			frame4.pack()
-			#add the last button created to the buttons list to allow the program to change its config in the button pressed function
-			self.buttons.append(btn)
-		#creation of the reset button
-		resetButton = tk.Button(frame4, width="16", height="3", text="Reset", command=self.reset_game)
-		#packing the reset button
-		resetButton.pack(side="right", padx=(310,0))
+		pygame.init()
+		self.gameState = True
+		self.available_turns = [1,2,3,4,5,6,7,8,9]
+		self.ai_mode = "easy"
+		self.bool_turn = True
+		self.count = 0
+		self.white = [255,255,255]
+		self.black = [000,000,000]
+		self.screen = pygame.display.set_mode((400,600))
+		self.screen.fill(self.white)
+		self.font = pygame.font.SysFont("monospace", 80)
+		self.font2 = pygame.font.SysFont("monospace", 25)
+		self.main_loop()
 
-	def check_if_solved(self, n):
-		"""This check function checks to see if there is a winner of the current game depending on wether its argument is "X" or "Y" This function will check the array and see who
-		if anybody has won the game. If there is a winner then it will pop up with a message box displaying who has won the game"""
-		if n == "X":
-			if self.values["1"] == "X" and self.values["2"] == "X" and self.values["3"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["4"] == "X" and self.values["5"] == "X" and self.values["6"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["7"] == "X" and self.values["8"] == "X" and self.values["9"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["1"] == "X" and self.values["5"] == "X" and self.values["9"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["1"] == "X" and self.values["4"] == "X" and self.values["7"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["2"] == "X" and self.values["5"] == "X" and self.values["8"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["3"] == "X" and self.values["6"] == "X" and self.values["9"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-			elif self.values["7"] == "X" and self.values["5"] == "X" and self.values["3"] == "X":
-				messagebox.showinfo("We have a winner", "X Wins Well Done!")
-		if n == "O":
-			if self.values["1"] == "O" and self.values["2"] == "O" and self.values["3"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["4"] == "O" and self.values["5"] == "O" and self.values["6"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["7"] == "O" and self.values["8"] == "O" and self.values["9"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["1"] == "O" and self.values["5"] == "O" and self.values["9"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["1"] == "O" and self.values["4"] == "O" and self.values["7"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["2"] == "O" and self.values["5"] == "O" and self.values["8"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["3"] == "O" and self.values["6"] == "O" and self.values["9"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-			elif self.values["7"] == "O" and self.values["5"] == "O" and self.values["3"] == "O":
-				messagebox.showinfo("We have a winner", "O Wins Well Done!")
-	#function to handle what happens when there is a button which is pressed
-	def btn_pressed(self, n):
-		"""Button pressed function. This function handles what happens to the buttons on the gui when they are pressed. This includes what text will be place on the button when it is pressed
-		This function in turn calls the check if solved function. It passes which player pressed a button last as an argument to allow the program to check who won."""
-		#references the global variables for use
-		# print(count)
-		if self.turn == True:
-			for key in self.values:
-				if key == str(n):
-					self.values[key] = "X"
-			#change the config for the buttons to show who has taken there turn and where
-			self.buttons[n-1].config(text="X")
-			self.buttons[n-1].config(state="disabled")
-			self.turn = False
-			self.count += 1
-			#the check if solved function is called to see if there is a winner when the button is pressed
-			self.check_if_solved("X")
-		else:
-			for key in self.values:
-				if key == str(n):
-					self.values[key] = "O"
-			self.buttons[n-1].config(text="O")
-			self.buttons[n-1].config(state="disabled")
-			self.turn = True
-			self.count += 1
-			self.check_if_solved("O")
-			# print(values)
+	def main_loop(self):
+		running = True
+		while running:
+			self.draw_grid()
+			pygame.display.update()
+			for event in pygame.event.get():
+				if event.type == pygame.MOUSEBUTTONUP:
+					x,y = event.pos
+					if self.gameState == True:
+						self.placement_grid(x,y)
+						if self.count < 8:
+							self.take_turn(ai.ai.random_ai(self))
+					if x <= 380 and x > 230:
+						if y <= 415 and y > 370:
+							self.reset_game()
+				elif event.type == pygame.QUIT:
+					pygame.display.quit()
+					pygame.quit()
+					running = False
+
+	def draw_grid(self):
+		pygame.draw.line(self.screen,(self.black),(50,50),(350,50), (5))
+		pygame.draw.line(self.screen,(self.black),(50,150),(350,150), (5))
+		pygame.draw.line(self.screen,(self.black),(50,250),(350,250), (5))
+		pygame.draw.line(self.screen,(self.black),(50,350),(350,350), (5))
+		pygame.draw.line(self.screen,(self.black),(50,50),(50,350), (5))
+		pygame.draw.line(self.screen,(self.black),(150,50),(150,350), (5))
+		pygame.draw.line(self.screen,(self.black),(250,50),(250,350), (5))
+		pygame.draw.line(self.screen,(self.black),(350,50),(350,350), (5))
+		pygame.draw.line(self.screen,(self.black),(230,370),(380,370), (1))
+		pygame.draw.line(self.screen,(self.black),(230,370),(230,415), (1))
+		pygame.draw.line(self.screen,(self.black),(230,415),(380,415), (1))
+		pygame.draw.line(self.screen,(self.black),(380,370),(380,415), (1))
+		resetLabel = self.font2.render(("Reset Game"), 1, self.black)
+		self.screen.blit(resetLabel,(230, 380))
+
+	def placement_grid(self, x, y):
+		if x > 50 and x < 350:
+			if y > 50 and y < 350:
+				if x >= 50 and x < 150:
+					if y >= 50 and y < 150:
+						self.take_turn(1)
+					elif y >= 150 and y < 250:
+						self.take_turn(4)
+					elif y >= 250 and y <= 350:
+						self.take_turn(7)
+				elif x >= 150 and x < 250:
+					if y >= 50 and y < 150:
+						self.take_turn(2)
+					elif y >= 150 and y < 250:
+						self.take_turn(5)
+					elif y >= 250 and y <= 350:
+						self.take_turn(8)
+				elif x >= 250 and x <= 350:
+					if y >= 50 and y < 150:
+						self.take_turn(3)
+					elif y >= 150 and y < 250:
+						self.take_turn( 6)
+					elif y >= 250 and y <= 350:
+						self.take_turn(9)
+
+	def check_for_win(self, n):
+		if self.available_turns[0] == n and self.available_turns[1] == n and self.available_turns[2] == n:
+			self.win(n)
+		elif self.available_turns[3] == n and self.available_turns[4] == n and self.available_turns[5] == n:
+			self.win(n)
+		elif self.available_turns[6] == n and self.available_turns[7] == n and self.available_turns[8] == n:
+			self.win(n)
+		elif self.available_turns[0] == n and self.available_turns[4] == n and self.available_turns[8] == n:
+			self.win(n)
+		elif self.available_turns[0] == n and self.available_turns[3] == n and self.available_turns[6] == n:
+			self.win(n)
+		elif self.available_turns[1] == n and self.available_turns[4] == n and self.available_turns[7] == n:
+			self.win(n)
+		elif self.available_turns[2] == n and self.available_turns[5] == n and self.available_turns[8] == n:
+			self.win(n)
+		elif self.available_turns[2] == n and self.available_turns[4] == n and self.available_turns[6] == n:
+			self.win(n)
 
 	def reset_game(self):
-		"""Function to reset the game back to the state that it opens up in. This means if the user wants to restart playing the game they can.
-		This allows the user to restart playing the game without haing to reopen the game"""
-		self.turn = True
-		#reset the values dictionary to default
-		self.values = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": ""}
-		self.count = 1
-		#loop to reset the buttons values to default
-		for num in range(0, 9):
-			self.buttons[num].config(text="", state="normal")
-game = Game()
+		self.available_turns = [1,2,3,4,5,6,7,8,9]
+		self.count = 0
+		self.bool_turn = True
+		self.gameState = True
+		self.screen.fill(self.white)
+		self.draw_grid()
+
+	def take_turn(self, n):
+		if self.bool_turn == True:
+			turn = "X"
+		else:
+			turn = "O"
+		
+		if self.count == 9:
+			self.win("none")
+		
+		if type(self.available_turns[n-1]) == int:
+			if n == 1:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (75, 55))
+			elif n == 2:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (175, 55))
+			elif n == 3:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (275, 55))
+			elif n == 4:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (75, 155))
+			elif n == 5:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (175, 155))
+			elif n == 6:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (275, 155))
+			elif n == 7:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (75, 255))
+			elif n == 8:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (175, 255))
+			elif n == 9:
+				label = self.font.render(turn, 1, self.black)
+				self.screen.blit(label, (275, 255))
+			self.available_turns[n-1] = turn
+			print(self.available_turns)
+			self.check_for_win(turn)
+			self.bool_turn = not self.bool_turn
+			self.count += 1
+
+		elif type(self.available_turns[n-1]) == str:
+			self.take_turn(ai.ai.random_ai(self))
+
+	def win(self, n):
+		if n == "none":
+			label = self.font2.render(("No Winner"), 1, self.black)
+		else:
+			label = self.font2.render((n + " Wins"), 1, self.black)
+		
+		self.screen.blit(label,(50, 380))
+		self.gameState = False
+
+if __name__ == "__main__":
+	game = TicTacToe()	
