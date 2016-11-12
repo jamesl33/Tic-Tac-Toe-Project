@@ -18,8 +18,6 @@ class Functions(object):
                     if self.check_for_win("X") == True:
                         self.isRunning = False
                         return True
-                    else:
-                        return False
         elif self.bool_turn == False:
             for num in range(1,10):
                 if num == n:
@@ -29,10 +27,6 @@ class Functions(object):
                         if self.check_for_win("O") == True:
                             self.isRunning = False
                             return True
-                        else:
-                            return False
-        else:
-            self.take_turn(n)
 
     def placement_grid(self, x, y):
         if x > 50 and x < 350:
