@@ -124,7 +124,7 @@ class Game_Window(object):
 			pygame.draw.line(self.display,([0,0,0]),(100,450),(300,450), (3))
 			pygame.draw.line(self.display,([0,0,0]),(300,400),(300,450), (3))
 
-			if self.ai_mode == "easy":
+			if self.mode == "easy":
 				ai_label = font4.render(("Easy"), 1, [0,0,0])
 				self.display.blit(ai_label, (170,410))
 		exit_label = font4.render(("Back"), 1, [0,0,0])
