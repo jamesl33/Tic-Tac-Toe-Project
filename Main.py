@@ -24,10 +24,11 @@ class Game_Window(object):
                             self.win("X")
                         else:
                             self.win("O")
-                    if self.ai_mode == "easy":
-                        self.functions.take_turn(self.ai.random_ai(self.functions.game_state))
-                    elif self.ai_mode == "hard":
-                        pass
+                    if self.functions.move_count < 8:
+                        if self.ai_mode == "easy":
+                            self.functions.take_turn(self.ai.random_ai(self.functions.game_state))
+                        elif self.ai_mode == "hard":
+                            pass
                     if self.functions.reset_game(x,y) == True:
                         self.display.fill([255,255,255])
                         self.draw_grid()
