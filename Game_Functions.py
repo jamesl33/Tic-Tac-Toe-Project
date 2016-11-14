@@ -6,6 +6,7 @@ class Functions(object):
         self.bool_turn = True
         self.game_state = [1,2,3,4,5,6,7,8,9]
         self.isRunning = True
+        self.move_count = 0
 
     def take_turn(self, n):
         """Docstring Here"""
@@ -14,7 +15,8 @@ class Functions(object):
                 if num == n:
                     if type(self.game_state[num - 1]) == int and self.isRunning == True:
                         self.game_state[num - 1] = "X"
-                    self.bool_turn = not self.bool_turn
+                        self.bool_turn = not self.bool_turn
+                        self.move_count += 1
                     if self.check_for_win("X") == True:
                         self.isRunning = False
                         return True
@@ -24,6 +26,7 @@ class Functions(object):
                     if type(self.game_state[num - 1]) == int and self.isRunning == True:
                         self.game_state[num - 1] = "O"
                         self.bool_turn = not self.bool_turn
+                        self.move_count += 1
                         if self.check_for_win("O") == True:
                             self.isRunning = False
                             return True
@@ -59,6 +62,7 @@ class Functions(object):
                 self.bool_turn = True
                 self.game_state = [1,2,3,4,5,6,7,8,9]
                 self.isRunning = True
+                self.move_count = 0
                 return True
 
     def check_for_win(self, n):
