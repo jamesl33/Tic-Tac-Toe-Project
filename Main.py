@@ -1,6 +1,7 @@
 import Game_Functions
 import Game_AI
 import pygame
+import Networking
 
 class Game_Window(object):
         def __init__(self):
@@ -9,6 +10,7 @@ class Game_Window(object):
                 self.display = pygame.display.set_mode((400, 600))
                 self.functions = Game_Functions.Functions()
                 self.ai = Game_AI.Game_Ai()
+                self.server = Networking()
 
         def play_game(self):
                 self.display.fill([255,255,255])
