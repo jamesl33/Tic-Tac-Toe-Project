@@ -1,36 +1,24 @@
 import pygame
+pygame.init()
 
-class Functions(object):
-	def __init__(self):
-		pygame.init()
+class Functions:
+	def __init__(self, gameState):
 		self.bool_turn = True
-		self.game_state = [1,2,3,4,5,6,7,8,9]
+		self.game_state = gameState
 		self.isRunning = True
 		self.move_count = 0
-		self.mode = "human"
-		self.ai_diff = "easy"
-		self.mode_i = 0
-		self.ai_diff_i = 0
 
 	def take_turn(self, n):
-		if self.bool_turn == True:
-			for num in range(1,10):
-				if num == n:
-					if type(self.game_state[num - 1]) == int and self.isRunning == True:
-						self.game_state[num - 1] = "X"
-						self.bool_turn = not self.bool_turn
-						self.move_count += 1
-						return True
-
-		elif self.bool_turn == False:
-			for num in range(1,10):
-				if num == n:
-					if type(self.game_state[num - 1]) == int and self.isRunning == True:
-						self.game_state[num - 1] = "O"
-						self.bool_turn = not self.bool_turn
-						self.move_count += 1
-						return True
-
+		player = "X"
+		if self.bool_turn == False:
+			player = "O"
+		for num in range(1,10):
+			if num == n:
+				if type(self.game_state[num - 1]) == int and self.isRunning == True:
+					self.game_state[num - 1] = player
+					self.bool_turn = not self.bool_turn
+					self.move_count += 1
+					return True
 
 	def placement_grid(self, x, y):
 		if x > 50 and x < 350:
@@ -65,4 +53,3 @@ class Functions(object):
 				self.isRunning = True
 				self.move_count = 0
 				return True
-
