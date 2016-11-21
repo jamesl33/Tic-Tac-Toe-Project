@@ -1,9 +1,6 @@
 # Tic-Tac-Toe-Project
-Running the game on
-Linux -- Make sure that you have got the package python3-tk / 
-tk installed 
-and run the Tic-Tac-Toe.py file. 
+Running the game on Linux -- Make sure that you have python-pip/pip installed and then issue the command "sudo pip install pygame" This will be the only required module that you need to play the game.
 
-Windows -- Run the Tic-Tac-Toe.py file. 
+Running the game on Windows -- Make sure that you have Python 3.5.2 installed and open the commandline. Issue the command "pip install pygame" This will installed the pygame module so that you can run the game. 
 
-This the a Tic-Tac-Toe game that has been developed for the A.L.L project at Coventry University. 
+Running a server -- 
