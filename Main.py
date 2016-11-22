@@ -1,6 +1,7 @@
 import Game_Functions
 import Game_AI
 import pygame
+#import Server
 pygame.init()
 class Game_Window:
 		def __init__(self):
@@ -27,8 +28,6 @@ class Game_Window:
 						if self.ai.mode == "computer":
 							if self.ai.ai_diff == "easy":
 								self.functions.take_turn(self.ai.random_ai(self.functions.game_state))
-							if self.ai.mode == "multiplayer":
-								pass			
 					if self.functions.reset_game(x,y) == True:
 						self.display.fill([255,255,255])
 						self.draw_grid()
