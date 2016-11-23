@@ -14,7 +14,7 @@ class Functions:
 			player = "O"
 		for num in range(1,10):
 			if num == n:
-				if type(self.game_state[num - 1]) == int and self.isRunning == True:
+				if type(self.game_state[num - 1]) == int and self.isRunning == True and self.bool_turn < 9:
 					self.game_state[num - 1] = player
 					self.bool_turn = not self.bool_turn
 					self.move_count += 1
