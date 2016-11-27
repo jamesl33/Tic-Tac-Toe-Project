@@ -2,7 +2,7 @@ import pygame
 import Menus
 import Game_Functions
 import Game_AI
-#import Client
+import Client
 pygame.init()
 
 class Main:
@@ -10,7 +10,7 @@ class Main:
                 self.ai = Game_AI.Game_Ai()
                 self.functions = Game_Functions.Functions([1,2,3,4,5,6,7,8,9])
                 self.ui = Menus.user_interface()
-                #self.client = Client.Client()
+                self.client = Client.Client()
                 self.display = pygame.display.set_mode((400, 600))
                 pygame.display.set_caption("Tic Tac Toe")
                 self.display.fill([255,255,255])
@@ -64,10 +64,16 @@ class Main:
                                                 self.ui.draw_options()
 
                         if self.ui.mode == "multiplayer":
-                                #self.client.connect()
-                                pass
+                                if not self.client.connected():
+                                        self.client.connect()
+
                         if x >= 50 and x <= 150:
                                 if y >= 500 and y <= 550:
+
+                                        if self.ui.mode != "multiplayer":
+                                                if self.client.connected():
+                                                        self.client.shutdown()
+                                        
                                         self.main_menu()
                                         break
 
