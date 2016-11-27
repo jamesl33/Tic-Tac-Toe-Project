@@ -18,12 +18,11 @@ class Client:
 
 	def connect(self):
 		if self.connected():
-			pass
+			raise AlreadyConnected()
 		self.__sendBuffer = []
 		self.__recvBuffer = ""
 
 		self.client = socket.socket()
-		self.client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		self.client.connect((self.__host, self.__port))
 
 	def connected(self):
