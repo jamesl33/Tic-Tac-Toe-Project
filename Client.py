@@ -1,5 +1,13 @@
 import socket, select, sys, time, pickle
 
+def unpickle_message(msgbytes):
+	return pickle.loads(msgbytes)
+
+
+def pickle_message(message):
+	msgbytes = pickle.dumps(message)
+	return (msgbytes)
+
 class AlreadyConnected(Exception):
 	pass
 
@@ -18,12 +26,11 @@ class Client:
 
 	def connect(self):
 		if self.connected():
-			pass
+			raise AlreadyConnected()
 		self.__sendBuffer = []
 		self.__recvBuffer = ""
 
 		self.client = socket.socket()
-		self.client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		self.client.connect((self.__host, self.__port))
 
 	def connected(self):
@@ -50,24 +57,21 @@ class Client:
 
 		if error != []:
 			pass
+
 		try:
-			if read != []:
-				msg = self.client.recv(1024)
-
-				if len(msg) == 0:
-					raise ConnectionResetError()
-				else:
-					self.__recvBuffer += pickle.loads(msg)
-				msgs = self.__recvBuffer.split("\n")
-				messages = msgs[-1]
-				self.__recvBuffer = msgs[-1]
-
 			if write != []:
 				while len(self.__sendBuffer) != 0:
 					msg = self.__sendBuffer[0]
 
 					self.client.send(msg)
 					self.__sendBuffer.pop(0)
+					
+			if read != []:
+				msgbytes = self.client.recv(2048)
+				msgbytes = unpickle_message(msgbytes)
+				print(msgbytes)
+				if not msgbytes:
+					print("Connection disconnected")
 
 		except ConnectionResetError:
 			self.shutdown()
