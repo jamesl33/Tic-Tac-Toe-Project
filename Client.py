@@ -3,7 +3,6 @@ import socket, select, sys, time, pickle
 def unpickle_message(msgbytes):
 	return pickle.loads(msgbytes)
 
-
 def pickle_message(message):
 	msgbytes = pickle.dumps(message)
 	return (msgbytes)
@@ -20,9 +19,7 @@ class Client:
 			host = "127.0.0.1"
 		self.__host = host
 		self.__port = port
-
 		self.client = None
-		self.connect()
 
 	def connect(self):
 		if self.connected():
@@ -48,6 +45,7 @@ class Client:
 		self.__sendBuffer.append(msgbytes)
 
 	def poll(self):
+		print("Client poll")
 		if not self.connected():
 			raise NotConnected()
 
@@ -65,7 +63,7 @@ class Client:
 
 					self.client.send(msg)
 					self.__sendBuffer.pop(0)
-					
+
 			if read != []:
 				msgbytes = self.client.recv(2048)
 				msgbytes = unpickle_message(msgbytes)
@@ -76,30 +74,21 @@ class Client:
 		except ConnectionResetError:
 			self.shutdown()
 
-		return messages
+	def RunClient(self):
+		try:
+			self.connect()
+			print("Client Connected")
+			try:
+				while True:
+					self.poll()
+				# if len(serverMessage) != 0:
+				# 	self.send_message(serverMessage)
 
-if __name__ == "__main__":
-	try:
-		client = Client()
+			except KeyboardInterrupt:
+				pass
 
-	except ConnectionRefusedError:
-		print("Connection failed")
-		sys.exit(1)
-
-	try:
-		print("Client connected")
-
-		client.send_message([1,2,3,4,5,6,7,8,9])
-
-		while True:
-			messages = client.poll()
-
-			for message in messages:
-				print("Recieved \"{}\"".format(message))
-
-	except (KeyboardInterrupt, NotConnected) as e:
-		pass
-
-	finally:
-		print("Shutdown")
-		client.shutdown()
+			finally:
+				print("Shutdown")
+				self.shutdown()
+		finally:
+			pass

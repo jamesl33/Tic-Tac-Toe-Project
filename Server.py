@@ -43,29 +43,44 @@ class Server:
 
 			else:
 				msgbytes = connection.recv(2048)
-				msgbytes = unpickle_message(msgbytes)
-				print(msgbytes)
-				if not msgbytes:
-					print("Connection disconnected")
+				if len(msgbytes) != 0:
+					msgbytes = unpickle_message(msgbytes)
+					print(msgbytes)
+					if not msgbytes:
+						print("Connection disconnected")
 
 		for connection in write:
 			if write != []:
 				while len(self.__sendBuffer) != 0:
 					msg = self.__sendBuffer[0]
 
-					self.server.send(msg)
+					connection.send(msg)
 					self.__sendBuffer.pop(0)
+
+		# if len(serverMessage) != 0:
+		# 	self.send_message(serverMessage)
+
+
+	# def run_server(self, msg):
+	# 	try:
+	# 		self.poll(msg)
+
+	# 	except KeyboardInterrupt:
+	# 		pass
+
+	# 	finally:
+	# 		print("Shutdown")
+	# 		self.shutdown()
+
 
 if __name__ == "__main__":
 	server = Server()
 
 	try:
 		print("Server is running on port {}".format(server.port))
-
+		server.send_message("brekfast")
 		while True:
 			server.poll()
-			time.sleep(2)
-			server.send_message("brekfast")
 
 	except KeyboardInterrupt:
 		pass
