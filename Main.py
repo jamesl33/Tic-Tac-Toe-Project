@@ -16,29 +16,33 @@ class Main:
 				self.display.fill([255,255,255])
 
 		def event_checker(self):
-				while True:
-						for event in pygame.event.get():
-								if event.type == pygame.MOUSEBUTTONUP:
-										x,y = event.pos
-										return(x,y)
-								elif event.type == pygame.QUIT:
-										self.shutdown()
-										break
+			while True:
+				try:
+					for event in pygame.event.get():
+						if event.type == pygame.MOUSEBUTTONUP:
+						  x,y = event.pos
+						  return(x,y)
+						elif event.type == pygame.QUIT:
+						  self.shutdown()
+						  break
+				except:
+					pass
 
 		def main_menu(self):
 				self.ui.draw_menu(self.display)
 				pygame.display.update()
 				while True:
-						x,y = self.event_checker()
-						if x >= 100 and x <= 300:
-								if y >= 200 and y <= 250:
-										self.play_game()
-										break
-								elif y >= 300 and y <= 350:
-										self.options()
-										break
-								elif y >= 400 and y <= 450:
-										self.shutdown()
+					x,y = self.event_checker()
+					if x >= 100 and x <= 300:
+						if y >= 200 and y <= 250:
+							self.play_game()
+							break
+						elif y >= 300 and y <= 350:
+							self.options()
+							break
+						elif y >= 400 and y <= 450:
+							self.shutdown()
+							break
 
 		def options(self):
 				self.ui.draw_options()
@@ -87,9 +91,7 @@ class Main:
 										self.main_menu()
 										break
 						if self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
-
 								self.win_line()
-
 								if self.ui.mode == "computer":
 										if self.ui.ai_diff == "easy":
 												if self.functions.move_count < 8:
@@ -99,7 +101,8 @@ class Main:
 												else:
 														pass
 								if self.ui.mode == "multiplayer":
-									pass#self.client.poll(self.functions.game_state)
+									self.client.send_message(self.functions.game_state)
+									self.client.poll()
 
 						self.update_display()
 						if self.functions.reset_game(x,y) == True:
@@ -121,59 +124,38 @@ class Main:
 				pygame.display.update()
 
 		def win_line(self):
-				if self.functions.isRunning == True:
-						for n in ["X","O"]:
-								if self.functions.game_state[0] == n and self.functions.game_state[1] == n and self.functions.game_state[2] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (80, 100), (320,100), (5))
-										break
-								elif self.functions.game_state[3] == n and self.functions.game_state[4] == n and self.functions.game_state[5] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (80, 200), (320, 200), (5))
-										break
-								elif self.functions.game_state[6] == n and self.functions.game_state[7] == n and self.functions.game_state[8] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (80, 300), (320, 300), (5))
-										break
-								elif self.functions.game_state[0] == n and self.functions.game_state[4] == n and self.functions.game_state[8] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (80, 80), (320, 320), (8))
-										break
-								elif self.functions.game_state[0] == n and self.functions.game_state[3] == n and self.functions.game_state[6] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (100, 80), (100, 320), (5))
-										break
-								elif self.functions.game_state[1] == n and self.functions.game_state[4] == n and self.functions.game_state[7] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (200, 80), (200, 320), (5))
-										break
-								elif self.functions.game_state[2] == n and self.functions.game_state[5] == n and self.functions.game_state[8] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (300, 80), (300, 320), (5))
-										break
-								elif self.functions.game_state[2] == n and self.functions.game_state[4] == n and self.functions.game_state[6] == n:
-										print(n + " win")
-										self.functions.isRunning = False
-										pygame.draw.line(self.display, ([0,0,0]), (100, 300), (300, 100), (8))
-										break
+			for n in ["X", "O"]:
+				if self.functions.game_state[0] == n and self.functions.game_state[1] == n and self.functions.game_state[2] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (80, 100), (320,100), (5))
+				elif self.functions.game_state[3] == n and self.functions.game_state[4] == n and self.functions.game_state[5] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (80, 200), (320, 200), (5))
+				elif self.functions.game_state[6] == n and self.functions.game_state[7] == n and self.functions.game_state[8] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (80, 300), (320, 300), (5))
+				elif self.functions.game_state[0] == n and self.functions.game_state[4] == n and self.functions.game_state[8] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (80, 80), (320, 320), (8)) 
+				elif self.functions.game_state[0] == n and self.functions.game_state[3] == n and self.functions.game_state[6] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (100, 80), (100, 320), (5))
+				elif self.functions.game_state[1] == n and self.functions.game_state[4] == n and self.functions.game_state[7] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (200, 80), (200, 320), (5))
+				elif self.functions.game_state[2] == n and self.functions.game_state[5] == n and self.functions.game_state[8] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (300, 80), (300, 320), (5))
+				elif self.functions.game_state[2] == n and self.functions.game_state[4] == n and self.functions.game_state[6] == n:
+					self.functions.isRunning = False
+					pygame.draw.line(self.display, ([0,0,0]), (100, 300), (300, 100), (8))
 
-								elif all(isinstance(i,str) for i in self.functions.game_state) == True:
-									   print("It's a tie!")
-									   break
-										
-				pygame.display.update()
+			pygame.display.update()
 
 		def shutdown(self):
-				pygame.display.quit()
-				pygame.quit()
+			pygame.quit()
+			pygame.display.quit()
 
 if __name__ == '__main__':
-				app = Main()
-				app.main_menu()
+	app = Main()
+	app.main_menu()

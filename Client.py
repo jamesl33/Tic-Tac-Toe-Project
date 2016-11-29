@@ -78,17 +78,7 @@ class Client:
 		try:
 			self.connect()
 			print("Client Connected")
-			try:
-				while True:
-					self.poll()
-				# if len(serverMessage) != 0:
-				# 	self.send_message(serverMessage)
-
-			except KeyboardInterrupt:
-				pass
-
-			finally:
-				print("Shutdown")
-				self.shutdown()
+		except KeyboardInterrupt:
+			pass
 		finally:
 			pass

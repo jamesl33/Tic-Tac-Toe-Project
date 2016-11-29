@@ -57,22 +57,6 @@ class Server:
 					connection.send(msg)
 					self.__sendBuffer.pop(0)
 
-		# if len(serverMessage) != 0:
-		# 	self.send_message(serverMessage)
-
-
-	# def run_server(self, msg):
-	# 	try:
-	# 		self.poll(msg)
-
-	# 	except KeyboardInterrupt:
-	# 		pass
-
-	# 	finally:
-	# 		print("Shutdown")
-	# 		self.shutdown()
-
-
 if __name__ == "__main__":
 	server = Server()
 
@@ -81,6 +65,7 @@ if __name__ == "__main__":
 		server.send_message("brekfast")
 		while True:
 			server.poll()
+			time.sleep(2)
 
 	except KeyboardInterrupt:
 		pass
