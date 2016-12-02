@@ -13,16 +13,20 @@ class Server:
 	def __init__(self, port=12345):
 		self.current_connections = []
 		self.current_sockets = []
-		self.__sendBuffer = []
+		self.sendBuffer = ""
 		self.port = port
 
 		self.server = socket.socket()
 		self.server.bind(("", port))
 		self.server.listen(2)
 
-	def send_message(self, msg):
+	def send_message(self, msg, client=None):
 		msgbytes = pickle.dumps(msg)
-		self.__sendBuffer.append(msgbytes)
+		if client == None:
+			for client in self.current_connections:
+				client.send(msgbytes)
+		else:
+			print("Done know that client")
 
 	def shutdown(self):
 		for client in self.current_connections:
@@ -38,6 +42,12 @@ class Server:
 			if connection is self.server:
 				client, address = connection.accept()
 				self.current_connections.append(client)
+				turn = True
+				if len(self.current_connections) == 2:
+					for client in self.current_connections:
+						msgbytes = pickle.dumps(turn)
+						client.send(msgbytes)
+						turn = not turn
 
 				print("Got connection from {}".format(address))
 
@@ -51,11 +61,7 @@ class Server:
 
 		for connection in write:
 			if write != []:
-				while len(self.__sendBuffer) != 0:
-					msg = self.__sendBuffer[0]
-
-					connection.send(msg)
-					self.__sendBuffer.pop(0)
+				pass
 
 if __name__ == "__main__":
 	server = Server()
@@ -65,7 +71,7 @@ if __name__ == "__main__":
 		server.send_message("brekfast")
 		while True:
 			server.poll()
-			time.sleep(2)
+			time.sleep(1)
 
 	except KeyboardInterrupt:
 		pass

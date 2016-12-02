@@ -1,8 +1,4 @@
-import pygame
-import Menus
-import Game_Functions
-import Game_AI
-import Client
+import pygame, Menus, Game_Functions, Game_AI, Client
 pygame.init()
 
 class Main:
@@ -17,6 +13,9 @@ class Main:
 
 		def event_checker(self):
 			while True:
+				if self.client.connected() == True:
+					self.client.poll()
+					value = True
 				try:
 					for event in pygame.event.get():
 						if event.type == pygame.MOUSEBUTTONUP:
@@ -72,6 +71,7 @@ class Main:
 								pass
 							else:
 								self.client.RunClient()
+								self.client.poll()
 							  
 						if x >= 50 and x <= 150:
 								if y >= 500 and y <= 550:
@@ -90,19 +90,19 @@ class Main:
 								if y >= 500 and y <= 550:
 										self.main_menu()
 										break
-						if self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
+
+						if self.ui.mode == "multiplayer":
+							self.client.send_message(([self.client.turn, (x,y)]))
+
+						elif self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
 								self.win_line()
 								if self.ui.mode == "computer":
 										if self.ui.ai_diff == "easy":
 												if self.functions.move_count < 8:
-
 														self.functions.take_turn(self.ai.random_ai(self.functions.game_state))
 														self.win_line()
 												else:
 														pass
-								if self.ui.mode == "multiplayer":
-									self.client.send_message(self.functions.game_state)
-									self.client.poll()
 
 						self.update_display()
 						if self.functions.reset_game(x,y) == True:

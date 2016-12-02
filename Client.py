@@ -20,6 +20,7 @@ class Client:
 		self.__host = host
 		self.__port = port
 		self.client = None
+		self.turn = None
 
 	def connect(self):
 		if self.connected():
@@ -45,7 +46,6 @@ class Client:
 		self.__sendBuffer.append(msgbytes)
 
 	def poll(self):
-		print("Client poll")
 		if not self.connected():
 			raise NotConnected()
 
@@ -66,8 +66,12 @@ class Client:
 
 			if read != []:
 				msgbytes = self.client.recv(2048)
-				msgbytes = unpickle_message(msgbytes)
-				print(msgbytes)
+				msg = unpickle_message(msgbytes)
+				if msg == True or msg == False:
+					self.turn = msg
+				else:
+					print(msg)
+
 				if not msgbytes:
 					print("Connection disconnected")
 
