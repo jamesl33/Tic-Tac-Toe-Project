@@ -8,11 +8,15 @@ class Functions:
                 self.isRunning = True
                 self.move_count = 0
 
-        def take_turn(self, n):
-                if self.bool_turn == True:
-                        player = "X"
+        def take_turn(self, n, multiplayerTurn=None):
+                if multiplayerTurn == None:
+                        if self.bool_turn == True:
+                                player = "X"
+                        else:
+                                player = "O"
                 else:
-                        player = "O"
+                        player = multiplayerTurn
+
                 for num in range(1,10):
                         if num == n:
                                 if type(self.game_state[num - 1]) == int and self.isRunning == True and self.move_count < 9:

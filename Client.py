@@ -21,6 +21,7 @@ class Client:
 		self.__port = port
 		self.client = None
 		self.turn = None
+		self.last_message = None
 
 	def connect(self):
 		if self.connected():
@@ -71,6 +72,7 @@ class Client:
 					self.turn = msg
 				else:
 					print(msg)
+					self.last_message = msg
 
 				if not msgbytes:
 					print("Connection disconnected")

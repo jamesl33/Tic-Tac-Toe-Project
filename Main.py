@@ -13,9 +13,7 @@ class Main:
 
 		def event_checker(self):
 			while True:
-				if self.client.connected() == True:
-					self.client.poll()
-					value = True
+				self.update_display()
 				try:
 					for event in pygame.event.get():
 						if event.type == pygame.MOUSEBUTTONUP:
@@ -92,6 +90,9 @@ class Main:
 										break
 
 						if self.ui.mode == "multiplayer":
+							if x > 230 and x < 380:
+									if y > 370 and y < 415:
+										self.client.send_message(["Reset", (x,y)])
 							self.client.send_message(([self.client.turn, (x,y)]))
 
 						elif self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
@@ -111,6 +112,15 @@ class Main:
 
 		def update_display(self):
 				"""Docstring Here"""
+				if self.client.connected() == True:
+					self.client.poll()
+					if self.client.connected() == True:
+						if self.client.last_message == None:
+							pass
+						elif self.client.last_message[0] == "Draw":
+							self.functions.take_turn(self.client.last_message[2], self.client.last_message[1])
+							print(self.functions.game_state)
+
 				lst = [(75, 55), (175, 55), (275, 55), (75, 155), (175, 155),\
 						   (275, 155), (75, 255), (175, 255), (275, 255)]
 
