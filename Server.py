@@ -37,30 +37,23 @@ class Server:
 		self.server.close()
 
 	def take_turn(self, msg):
+		print(msg)
 		pos = msg[1]
 		x = pos[0]
 		y = pos[1]
 		if x > 230 and x < 380:
 				if y > 370 and y < 415:
 					print("Reset")
-		elif x > 50 and x < 350:
-			if y > 50 and y < 350:
-				if msg[0] == True and self.turn == True:
-					print("X Turn")
-					self.turn = not self.turn
-					msgbytes = pickle.dumps(["Draw", "X", self.functions.placement_grid(x,y)])
-					for connection in self.current_connections:
-						connection.send(msgbytes)
-				elif msg[0] == False and self.turn == False:
-					print("O Turn")
-					self.turn = not self.turn
-					msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
-					for connection in self.current_connections:
-						connection.send(msgbytes)
-				elif msg[0] == "Reset":
-					pass
-				elif msg[0] == "Message":
-					pass
+		if msg[0] == True and self.turn == True:
+			msgbytes = pickle.dumps(["Draw", "X", self.functions.placement_grid(x,y)])
+			self.turn = not self.turn
+			for connection in self.current_connections:
+				connection.send(msgbytes)
+		elif msg[0] == False and self.turn == False:
+			msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
+			self.turn = not self.turn
+			for connection in self.current_connections:
+				connection.send(msgbytes)
 
 	def poll(self):
 		read, write, error = select.select(self.current_connections+[self.server], self.current_connections, self.current_connections, 0)
@@ -81,7 +74,7 @@ class Server:
 			else:
 				msgbytes = connection.recv(2048)
 				if len(msgbytes) != 0:
-					msg = unpickle_message(msgbytes)
+					msg = pickle.loads(msgbytes)
 					self.take_turn(msg)
 					if not msgbytes:
 						print("Connection disconnected")
