@@ -3,6 +3,8 @@ pygame.init()
 
 class Main:
 		def __init__(self):
+				"""Instantiation creates objects for each on the sections of the game that get imported.
+				Creates the window and sets the title for the window"""
 				self.ai = Game_AI.Game_Ai()
 				self.functions = Game_Functions.Functions([1,2,3,4,5,6,7,8,9])
 				self.ui = Menus.user_interface()
@@ -12,6 +14,7 @@ class Main:
 				self.display.fill([255,255,255])
 
 		def event_checker(self):
+			"""Pygame function which return an x,y tuple of where the person clicked on the window"""
 			while True:
 				self.update_display()
 				try:
@@ -26,6 +29,7 @@ class Main:
 					pass
 
 		def main_menu(self):
+				"""Logic behind the main menu user interface. When the person clicks on a button they will be take to the next display"""
 				self.ui.draw_menu(self.display)
 				pygame.display.update()
 				while True:
@@ -42,6 +46,8 @@ class Main:
 							break
 
 		def options(self):
+				"""Logic behind the options menus. This procedure hands what game mode the person is playing. The three different game modes are:
+				Multiplayer, single player and playing against ai. This functions uses the returned answer from the event-checker"""
 				self.ui.draw_options()
 				mode_list = ["human","multiplayer","computer"]
 				ai_diff_list = ["easy","hard"]
@@ -79,6 +85,8 @@ class Main:
 										break
 
 		def play_game(self):
+			"""This is the main games mainloop. This procedure hands alot of the game logic. This procedure calls lots of other functions in the process.
+			The logic for the networking is partially held within this secion of code. The other section is in the server class"""
 				self.display.fill([255,255,255])
 				self.ui.draw_grid()
 				pygame.display.update()
@@ -92,7 +100,7 @@ class Main:
 						if self.ui.mode == "multiplayer" and self.functions.isRunning == True:
 							if x > 230 and x < 380:
 									if y > 370 and y < 415:
-										self.client.send_message(["Reset", (x,y)])
+										self.client.send_message(["Reset"])
 							self.client.send_message(([self.client.turn, (x,y)]))
 
 						elif self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
@@ -103,18 +111,25 @@ class Main:
 												else:
 														pass
 
-						self.update_display()
 						if self.functions.reset_game(x,y) == True:
 								self.display.fill([255,255,255])
 								self.ui.draw_grid()
 
+						self.update_display()
+
 		def update_display(self):
+				"""This function handles the updating of the window. It does this using the lst variable. These are all of the coords for where the "X" and "O" should be placed. This function uses
+				a for loop to check of the current game state variable. This functions also handles the drawing of the players moves when playing a networked game."""
 				if self.client.connected() == True:
 					self.client.poll()
 					if self.client.last_message == None:
 						pass
 					elif self.client.last_message[0] == "Draw":
 						self.functions.take_turn(self.client.last_message[2], self.client.last_message[1])
+					elif self.client.last_message[0] == "Reset":
+						if self.functions.reset_game(x,y) == True:
+								self.display.fill([255,255,255])
+								self.ui.draw_grid()
 
 				self.win_line()
 
@@ -131,6 +146,9 @@ class Main:
 				pygame.display.update()
 
 		def win_line(self):
+			"""This procedure checks over the game state variable which is a list and will see if any of the players has won.
+			If there is a winner a line will be drawn through all the points and then the game will be disabled. This means that when the 
+			player clicks on the screen it will not place any more counters. The user will still be able to reset the game."""
 			for n in ["X", "O"]:
 				if self.functions.game_state[0] == n and self.functions.game_state[1] == n and self.functions.game_state[2] == n:
 					self.functions.isRunning = False

@@ -8,7 +8,6 @@ def pickle_message(message):
 	msgbytes = pickle.dumps(message)
 	return (msgbytes)
 
-
 class Server:
 	def __init__(self, port=12345):
 		self.current_connections = []
@@ -37,7 +36,6 @@ class Server:
 		self.server.close()
 
 	def take_turn(self, msg):
-		print(msg)
 		pos = msg[1]
 		x = pos[0]
 		y = pos[1]
@@ -52,6 +50,10 @@ class Server:
 		elif msg[0] == False and self.turn == False:
 			msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
 			self.turn = not self.turn
+			for connection in self.current_connections:
+				connection.send(msgbytes)
+		elif msg[0] == "Reset":
+			msgbytes = pickle.dumps(["Reset"])
 			for connection in self.current_connections:
 				connection.send(msgbytes)
 
