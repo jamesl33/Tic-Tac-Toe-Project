@@ -24,15 +24,10 @@ class Server:
 
     def take_turn(self, msg):
         """Function that handles turn taking in multiplayer mode."""
-        print(msg)
         pos = msg[1]
         x = pos[0]
         y = pos[1]
-        if x > 230 and x < 380:
-                if y > 370 and y < 415:
-                    msgbytes = pickle.dumps(["Reset", (x,y)])
-                    for connection in self.current_connections:
-                        connection.send(msgbytes)
+
         if msg[0] == True and self.turn == True:
             msgbytes = pickle.dumps(["Draw", "X", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
@@ -41,6 +36,11 @@ class Server:
         elif msg[0] == False and self.turn == False:
             msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
+            for connection in self.current_connections:
+                connection.send(msgbytes)
+
+        elif msg[0] == "Reset":
+            msgbytes = pickle.dumps(["Reset", (x,y)])
             for connection in self.current_connections:
                 connection.send(msgbytes)
 
@@ -66,6 +66,7 @@ class Server:
                 if len(msgbytes) != 0:
                     msg = pickle.loads(msgbytes)
                     self.take_turn(msg)
+                    print(msg)
                     if not msgbytes:
                         print("Connection disconnected")
 

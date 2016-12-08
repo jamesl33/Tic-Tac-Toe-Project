@@ -1,11 +1,8 @@
 #Module in charge of handling all client related functions. (Inspired by David's code)
 import socket, select, sys, time, pickle
 
-class AlreadyConnected(Exception):
-    pass
-
 class NotConnected(Exception):
-    pass
+    print("You are not connected")
 
 class Client:
     def __init__(self, host=None, port=12345):
@@ -20,13 +17,16 @@ class Client:
 
     def connect(self):
         """Function in charge of connecting the client to the server."""
-        if self.connected():
-            raise AlreadyConnected()
-        self.__sendBuffer = []
-        self.__recvBuffer = ""
+        try:
+            if self.connected():
+                raise AlreadyConnected()
+            self.__sendBuffer = []
+            self.__recvBuffer = ""
 
-        self.client = socket.socket()
-        self.client.connect((self.__host, self.__port))
+            self.client = socket.socket()
+            self.client.connect((self.__host, self.__port))
+        except ConnectionRefusedError:
+            print("Failed to connect to the server \n you must run the Server.py file to play multiplayer")
 
     def connected(self):
         """Function that returns wether or not the client is already connected."""    
