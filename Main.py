@@ -11,6 +11,8 @@ class Main:
         self.client = Client.Client()
         self.display = pygame.display.set_mode((400, 600))
         pygame.display.set_caption("Tic Tac Toe")
+        icon = pygame.image.load("TitleIcon.png")
+        pygame.display.set_icon(icon)
         self.display.fill([255,255,255])
 
     def event_checker(self):
