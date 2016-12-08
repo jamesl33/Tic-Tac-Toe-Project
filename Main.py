@@ -102,8 +102,11 @@ class Main:
             if self.ui.mode == "multiplayer" and self.functions.isRunning == True:
                 if x > 230 and x < 380:
                     if y > 370 and y < 415:
-                        self.client.send_message(["Reset"])
-                self.client.send_message(([self.client.turn, (x,y)]))
+                        self.client.send_message(["Reset", (x,y)])
+
+                if x > 50 and x < 350:
+                        if y > 50 and y < 350:  
+                            self.client.send_message(([self.client.turn, (x,y)]))
 
             elif self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
                 if self.ui.mode == "computer":
@@ -113,7 +116,7 @@ class Main:
                         else:
                             pass
 
-            if self.functions.reset_game(x,y) == True:
+            if self.functions.reset_game(x,y) == True and self.ui.mode != "muiltiplayer":
                 self.display.fill([255,255,255])
                 self.ui.draw_grid()
 
@@ -124,14 +127,16 @@ class Main:
         a for loop to check of the current game state variable. This functions also handles the drawing of the players moves when playing a networked game."""
         if self.client.connected() == True:
             self.client.poll()
-            if self.client.last_message == None:
-                pass
-            elif self.client.last_message[0] == "Draw":
-                self.functions.take_turn(self.client.last_message[2], self.client.last_message[1])
-            elif self.client.last_message[0] == "Reset":
-                if self.functions.reset_game(x,y) == True:
-                    self.display.fill([255,255,255])
-                    self.ui.draw_grid()
+            if self.client.last_message != None:
+                if self.client.last_message[0] == "Draw":
+                    self.functions.take_turn(self.client.last_message[2], self.client.last_message[1])
+                
+                if self.client.last_message[0] == "Reset":
+                    if self.functions.reset_game(300, 400) == True:
+                        self.display.fill([255,255,255])
+                        self.ui.draw_grid()
+                        self.client.last_message = None
+
 
         self.win_line()
 

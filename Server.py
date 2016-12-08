@@ -54,6 +54,10 @@ class Server:
             self.turn = not self.turn
             for connection in self.current_connections:
                 connection.send(msgbytes)
+        elif msg[0] == "Reset":
+            msgbytes = pickle.dumps(["Reset", (x,y)])
+            for connection in self.current_connections:
+                connection.send(msgbytes)
 
     def poll(self):
         """Function that takes care of receiving and sending messages to and from the server"""
