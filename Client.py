@@ -1,15 +1,6 @@
 #Module in charge of handling all client related functions. (Inspired by David's code)
 import socket, select, sys, time, pickle
 
-def unpickle_message(msgbytes):
-    """Function that turns messages sent from the server in bits into their original values, so as to maintain their data types"""
-    return pickle.loads(msgbytes)
-
-def pickle_message(message):
-    """Function that turns data into bits to be able to send it over to the server and keep the data type information intact"""
-    msgbytes = pickle.dumps(message)
-    return (msgbytes)
-
 class AlreadyConnected(Exception):
     pass
 
@@ -76,7 +67,7 @@ class Client:
 
             if read != []:
                 msgbytes = self.client.recv(2048)
-                msg = unpickle_message(msgbytes)
+                msg = pickle.loads(msgbytes)
                 if msg == True or msg == False:
                     self.turn = msg
                 else:

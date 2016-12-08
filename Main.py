@@ -51,7 +51,7 @@ class Main:
         """Logic behind the options menus. This procedure hands what game mode the person is playing. The three different game modes are:
         Multiplayer, single player and playing against ai. This functions uses the returned answer from the event-checker"""
         self.ui.draw_options()
-        mode_list = ["human","multiplayer","computer"]
+        mode_list = ["human","computer","multiplayer"]
         ai_diff_list = ["easy","hard"]
         while True:
             x,y = self.event_checker()

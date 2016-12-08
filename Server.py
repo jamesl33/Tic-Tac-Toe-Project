@@ -1,17 +1,5 @@
-#This modules holds all the methods and data to run a server for the game.
+#This modules holds all the methods and data to run a server for the game.(Inspired by David's code)
 import socket, select, pickle, time, Game_Functions
-
-def unpickle_message(msgbytes):
-    """Function in charge of unpickling data and outputting it."""
-        
-    return pickle.loads(msgbytes)
-
-
-def pickle_message(message):
-    """Function in charge of pickling data and outputting it."""
-    msgbytes = pickle.dumps(message)
-    return (msgbytes)
-
 
 class Server:
     def __init__(self, port=12345):
@@ -31,7 +19,6 @@ class Server:
         """Function that closes all connections to any clients that are connected and then shuts down the server itself."""
         for client in self.current_connections:
             client.close()
-
         self.server.shutdown(1)
         self.server.close()
 
@@ -43,7 +30,9 @@ class Server:
         y = pos[1]
         if x > 230 and x < 380:
                 if y > 370 and y < 415:
-                    print("Reset")
+                    msgbytes = pickle.dumps(["Reset", (x,y)])
+                    for connection in self.current_connections:
+                        connection.send(msgbytes)
         if msg[0] == True and self.turn == True:
             msgbytes = pickle.dumps(["Draw", "X", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
@@ -52,10 +41,6 @@ class Server:
         elif msg[0] == False and self.turn == False:
             msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
-            for connection in self.current_connections:
-                connection.send(msgbytes)
-        elif msg[0] == "Reset":
-            msgbytes = pickle.dumps(["Reset", (x,y)])
             for connection in self.current_connections:
                 connection.send(msgbytes)
 
