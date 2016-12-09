@@ -42,6 +42,7 @@ class Client:
 
     def send_message(self, msg):
         """Function that receives an input, pickles that input and adds it to a buffer."""
+        print(msg)
         msgbytes = pickle.dumps(msg)
         self.__sendBuffer.append(msgbytes)
 
@@ -61,13 +62,15 @@ class Client:
             if write != []:
                 while len(self.__sendBuffer) != 0:
                     msg = self.__sendBuffer[0]
-
                     self.client.send(msg)
                     self.__sendBuffer.pop(0)
 
             if read != []:
                 msgbytes = self.client.recv(2048)
-                msg = pickle.loads(msgbytes)
+                try:
+                    msg = pickle.loads(msgbytes)
+                except EOFError:
+                    pass
                 if msg == True or msg == False:
                     self.turn = msg
                 else:

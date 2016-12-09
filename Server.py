@@ -28,19 +28,20 @@ class Server:
         x = pos[0]
         y = pos[1]
 
+        if msg[0] == "Reset":
+            msgbytes = pickle.dumps(["Reset", (x,y)])
+            for connection in self.current_connections:
+                connection.send(msgbytes)
+
         if msg[0] == True and self.turn == True:
             msgbytes = pickle.dumps(["Draw", "X", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
             for connection in self.current_connections:
                 connection.send(msgbytes)
+
         elif msg[0] == False and self.turn == False:
             msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
-            for connection in self.current_connections:
-                connection.send(msgbytes)
-
-        elif msg[0] == "Reset":
-            msgbytes = pickle.dumps(["Reset", (x,y)])
             for connection in self.current_connections:
                 connection.send(msgbytes)
 

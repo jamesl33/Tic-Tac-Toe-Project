@@ -5,7 +5,6 @@ pygame.init()
 class user_interface:
 	def __init__(self):
 		"""This function sets the default game mode of the game, as well as the different fonts used in it."""
-
 		self.mode = "human"
 		self.ai_diff = "easy"
 		self.mode_i = 0

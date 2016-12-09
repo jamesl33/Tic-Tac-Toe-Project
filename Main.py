@@ -96,6 +96,7 @@ class Main:
             x,y = self.event_checker()
             if x >= 50 and x <= 150:
                 if y >= 500 and y <= 550:
+                    self.functions.reset_game(300,400)
                     self.main_menu()
                     break
 
@@ -137,8 +138,8 @@ class Main:
                         self.ui.draw_grid()
                         self.client.last_message = None
 
-
         self.win_line()
+
 
         lst = [(75, 55), (175, 55), (275, 55), (75, 155), (175, 155),\
                    (275, 155), (75, 255), (175, 255), (275, 255)]

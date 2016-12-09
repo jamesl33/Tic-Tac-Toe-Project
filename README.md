@@ -18,3 +18,11 @@ will not do anything untill two people have connected.
 Next you will need to run the Main.py file twice to create two instances of the game.
 You will then need to go into the settings menu and choose player vs player(online) this will connect you to the server.
 When two people have connected to the server player 1 will be able to take thier turn. 
+
+
+Known Bugs:
+1. When playing the game in multiplayer mode if there is moves on the display when you press the back button it will still display the "X" and "O" counters on the screen.
+2. When playing the game in multiplayer mode you must press the reset button twice if the win line is drawn on the screen.
+3. When you close the game from the terminal or from a text editor such as sublime you will get a Pygame Error: Video system not initialised. This bug has been ignored so far as it does not
+effect how the game plays.
+4. Harder Ai in not implimented as this was set on the side while the networking was created. The menu option has been left in so that later on the new AI can be added very easilly.
