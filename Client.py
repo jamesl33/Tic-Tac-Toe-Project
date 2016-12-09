@@ -1,6 +1,9 @@
 #Module in charge of handling all client related functions. (Inspired by David's code)
 import socket, select, sys, time, pickle
 
+class AlreadyConnected(Exception):
+    print("You are already connected")
+
 class NotConnected(Exception):
     print("You are not connected")
 
@@ -17,16 +20,11 @@ class Client:
 
     def connect(self):
         """Function in charge of connecting the client to the server."""
-        try:
-            if self.connected():
-                raise AlreadyConnected()
-            self.__sendBuffer = []
-            self.__recvBuffer = ""
-
-            self.client = socket.socket()
-            self.client.connect((self.__host, self.__port))
-        except ConnectionRefusedError:
-            print("Failed to connect to the server \n you must run the Server.py file to play multiplayer")
+        if self.connected():
+            raise AlreadyConnected()
+        self.sendBuffer = []
+        self.client = socket.socket()
+        self.client.connect((self.__host, self.__port))
 
     def connected(self):
         """Function that returns wether or not the client is already connected."""    
@@ -38,13 +36,11 @@ class Client:
             return
         self.client.close()
         self.client = None
-        self.__recvBuffer = ""
 
     def send_message(self, msg):
         """Function that receives an input, pickles that input and adds it to a buffer."""
-        print(msg)
         msgbytes = pickle.dumps(msg)
-        self.__sendBuffer.append(msgbytes)
+        self.sendBuffer.append(msgbytes)
 
     def poll(self):
         """Function that handles receiving and sending messages to and from the client."""
@@ -60,16 +56,17 @@ class Client:
 
         try:
             if write != []:
-                while len(self.__sendBuffer) != 0:
-                    msg = self.__sendBuffer[0]
+                while len(self.sendBuffer) != 0:
+                    msg = self.sendBuffer[0]
                     self.client.send(msg)
-                    self.__sendBuffer.pop(0)
+                    self.sendBuffer.pop(0)
 
             if read != []:
                 msgbytes = self.client.recv(2048)
                 try:
                     msg = pickle.loads(msgbytes)
                 except EOFError:
+                    print("EOFError")
                     pass
                 if msg == True or msg == False:
                     self.turn = msg
@@ -85,10 +82,12 @@ class Client:
 
     def RunClient(self):
         """Function in charge of connecting the client, while giving a message confirming it. (Mostly used for debugging)"""
-        try:
-            self.connect()
-            print("Client Connected")
-        except KeyboardInterrupt:
-            pass
-        finally:
-            pass
+        while True:
+            try:
+                self.connect()
+                break
+            except KeyboardInterrupt:
+                pass
+            finally:
+                if self.connected == True:
+                    print("Client Connected")

@@ -22,10 +22,10 @@ class Main:
             try:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEBUTTONUP:
-                        x,y = event.pos
+                        x,y = event.pos  # "X" and "Y" represents where the person clicked
                         return(x,y)
                     elif event.type == pygame.QUIT:
-                      self.shutdown()
+                      self.shutdown()  #if the event calls to quit the game
                       break
             except:
                 pass
@@ -37,14 +37,14 @@ class Main:
         while True:
             x,y = self.event_checker()
             if x >= 100 and x <= 300:
-                if y >= 200 and y <= 250:
+                if y >= 200 and y <= 250: #if the person clicked in the perameters of the game button start playing the game
                     self.play_game()
                     break
                 elif y >= 300 and y <= 350:
-                    self.options()
+                    self.options()  #if the person clicked in the perameters of the options menu button open the menu
                     break
                 elif y >= 400 and y <= 450:
-                    self.shutdown()
+                    self.shutdown() ##if the person clicked in the perameters of quit button close the game
                     break
 
     def options(self):
@@ -52,16 +52,16 @@ class Main:
         Multiplayer, single player and playing against ai. This functions uses the returned answer from the event-checker"""
         self.ui.draw_options()
         mode_list = ["human","computer","multiplayer"]
-        ai_diff_list = ["easy","hard"]
+        ai_diff_list = ["easy","easy"]
         while True:
-            x,y = self.event_checker()
+            x,y = self.event_checker() #get the x,y coords of where the person clicked
             if x >= 100 and x <= 300:
                 if y >= 170 and y <= 320:
                     self.ui.mode_i += 1
                     if self.ui.mode_i == 3:
                         self.ui.mode_i = 0
                     self.ui.mode = mode_list[self.ui.mode_i]
-                    self.ui.draw_options()
+                    self.ui.draw_options() 
 
             if self.ui.mode == "computer":
                 if x >= 100 and x <= 300:
@@ -73,17 +73,22 @@ class Main:
                         self.ui.draw_options()
 
             if self.ui.mode == "multiplayer":
-                if self.client.connected() == True:
+                if self.client.connected() == True: #if game mode is multiplayer start the server and poll, except connection refused and ignore it
                     pass
                 else:
-                    self.client.RunClient()
-                    self.client.poll()
-                      
+                    try:
+                        self.client.RunClient()
+                        self.client.poll()
+
+                    except ConnectionRefusedError:
+                        print("Run Server.py before playing online")
+                        self.client.client = None
+
             if x >= 50 and x <= 150:
                 if y >= 500 and y <= 550:
                     if self.ui.mode != "multiplayer":
                         pass
-                self.main_menu()
+                self.main_menu() #if the person clicks the back button go to the main menu
                 break
 
     def play_game(self):
@@ -93,31 +98,32 @@ class Main:
         self.ui.draw_grid()
         pygame.display.update()
         while True:
-            x,y = self.event_checker()
+            x,y = self.event_checker() #get x,y coords of where the person clicked
             if x >= 50 and x <= 150:
                 if y >= 500 and y <= 550:
-                    self.functions.reset_game(300,400)
+                    self.functions.reset_game(300,400) #if the person clicked on the reset button reset the game
                     self.main_menu()
                     break
 
-            if self.ui.mode == "multiplayer" and self.functions.isRunning == True:
+            if self.ui.mode == "multiplayer" and self.functions.isRunning == True: #when the person click and the game mode is multiplayer send a message to the server with the position and the persons game mode
                 if x > 50 and x < 350:
                         if y > 50 and y < 350:  
                             self.client.send_message(([self.client.turn, (x,y)]))
-
+ 
                 if x > 230 and x < 380:
                     if y > 370 and y < 415:
-                        self.client.send_message(["Reset", (x,y)])
+                        self.client.send_message(["Reset", (x,y)]) #if the person clicks on the reset button while playing multiplayer send a message with the x,y and "reset"
 
-            elif self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True:
+            elif self.functions.take_turn(self.functions.placement_grid(x,y)) == True and self.functions.isRunning == True: #if the game mode is ai after the person has taken their turn take the AI's turn
                 if self.ui.mode == "computer":
                     if self.ui.ai_diff == "easy":
                         if self.functions.move_count < 8:
                             self.functions.take_turn(self.ai.random_ai(self.functions.game_state))
-                        else:
-                            pass
+                    elif self.ui.ai_diff == "hard":
+                        if self.functions.move_count < 8:
+                            self.functions.take_turn(self.ai.random_ai(self.functions.game_state))
 
-            if self.functions.reset_game(x,y) == True and self.ui.mode != "multiplayer":
+            if self.functions.reset_game(x,y) == True and self.ui.mode != "multiplayer": #reset the game if the player clicks on the reset button
                 self.display.fill([255,255,255])
                 self.ui.draw_grid()
 
@@ -138,19 +144,18 @@ class Main:
                         self.display.fill([255,255,255])
                         self.ui.draw_grid()
                         self.client.last_message = None
-
-
-
+                        
         lst = [(75, 55), (175, 55), (275, 55), (75, 155), (175, 155),\
                    (275, 155), (75, 255), (175, 255), (275, 255)]
 
-        for num in range(1,10):
+        for num in range(1,10): #render "X" or "O" at on of the points in the list depending on where the person clicked on the screen this is done using the game state variable
             if self.functions.game_state[num - 1] == "X":
                 label = self.ui.font.render("X", 1, [0,0,0])
                 self.display.blit(label, lst[num - 1])
             elif self.functions.game_state[num - 1] == "O":
                 label = self.ui.font.render("O", 1, [0,0,0])
                 self.display.blit(label, lst[num - 1])
+        self.win_line()
         pygame.display.update()
 
     def win_line(self):

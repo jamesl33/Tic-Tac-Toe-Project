@@ -4,9 +4,7 @@ class Game_Ai(object):
         pass
     def random_ai(self, lst):
         while True:
-            num = random.choice(lst)
+            num = random.choice(lst) #choose number from avaiable moves list
             if type(num) == int:
-                return num 
-                break
-    def hardened_ai(self):
-        pass
+                return num #return the number 
+                break #end the loop

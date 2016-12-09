@@ -9,7 +9,7 @@ class Server:
         self.current_sockets = []
         self.sendBuffer = ""
         self.port = port
-        self.functions = Game_Functions.Functions([1,2,3,4,5,6,7,8,9])
+        self.functions = Game_Functions.Functions([1,2,3,4,5,6,7,8,9]) #create function object to handle serverside logic
         self.server = socket.socket()
         self.server.bind(("", port))
         self.server.listen(2)
@@ -28,18 +28,18 @@ class Server:
         x = pos[0]
         y = pos[1]
 
-        if msg[0] == "Reset":
+        if msg[0] == "Reset": #if message index 0 = "Reset" then reset the game and send message to connection telling them to reset
             msgbytes = pickle.dumps(["Reset", (x,y)])
             for connection in self.current_connections:
                 connection.send(msgbytes)
 
-        if msg[0] == True and self.turn == True:
+        if msg[0] == True and self.turn == True: #if its player ones turn and message is from them take their turn and send back the position they should draw the counter
             msgbytes = pickle.dumps(["Draw", "X", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
             for connection in self.current_connections:
                 connection.send(msgbytes)
 
-        elif msg[0] == False and self.turn == False:
+        elif msg[0] == False and self.turn == False: #if its player twos turn and message is from them take their turn and send back the position they should draw the counter
             msgbytes = pickle.dumps(["Draw", "O", self.functions.placement_grid(x,y)])
             self.turn = not self.turn
             for connection in self.current_connections:
@@ -49,10 +49,10 @@ class Server:
         """Function that takes care of receiving and sending messages to and from the server"""
         read, write, error = select.select(self.current_connections+[self.server], self.current_connections, self.current_connections, 0)
 
-        for connection in read:
+        for connection in read: 
             if connection is self.server:
-                client, address = connection.accept()
-                self.current_connections.append(client)
+                client, address = connection.accept() #accept connection 
+                self.current_connections.append(client) #add the connection to current_connections
                 turn = True
                 if len(self.current_connections) == 2:
                     for client in self.current_connections:
@@ -60,20 +60,16 @@ class Server:
                         client.send(msgbytes)
                         turn = not turn
 
-                print("Got connection from {}".format(address))
+                print("Got connection from {}".format(address)) #print connections 
 
             else:
-                msgbytes = connection.recv(2048)
+                msgbytes = connection.recv(2048) #recieve a message
                 if len(msgbytes) != 0:
-                    msg = pickle.loads(msgbytes)
-                    self.take_turn(msg)
+                    msg = pickle.loads(msgbytes) #unpickle the message
+                    self.take_turn(msg) 
                     print(msg)
                     if not msgbytes:
                         print("Connection disconnected")
-
-        for connection in write:
-            if write != []:
-                pass
 
 if __name__ == "__main__":
     server = Server()

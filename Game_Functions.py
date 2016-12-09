@@ -16,7 +16,7 @@ class Functions:
 		if several conditions are met. These conditions include not having a players move already in that position and it also being 
 		that players turn."""
 		if multiplayerTurn == None:
-				if self.bool_turn == True:
+				if self.bool_turn == True: #player variable is equal to whos turn it is
 						player = "X"
 				else:
 						player = "O"
@@ -25,8 +25,8 @@ class Functions:
 
 		for num in range(1,10):
 				if num == n:
-						if type(self.game_state[num - 1]) == int and self.isRunning == True and self.move_count < 9:
-								self.game_state[num - 1] = player
+						if type(self.game_state[num - 1]) == int and self.isRunning == True and self.move_count < 9: #take turn and make turn the opposite of turn
+								self.game_state[num - 1] = player #place "X" or "O" in the position which references where the person clicked on the grid
 								self.bool_turn = not self.bool_turn
 								self.move_count += 1
 								return True
