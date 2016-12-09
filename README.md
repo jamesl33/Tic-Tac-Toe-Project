@@ -5,7 +5,8 @@ This game was created for the activity lead learning as Coventry University and 
 the game. The game is written in Python using the Pygame module.
 
 How do i run the game?
-Simply running the Main.py file will allow you to play the game. You should be able to find your way around from here.
+Simply running the Main.py file will allow you to play the game. You should be able to find your way around from here using the in game menus. To play local two player simply open the Main.py file and then press the play game button. If you would like to play the game online with two people first of all you must run the Server.py file. Then you will need to start two instances of the Main.py file and go into the setting menu and select the online mode. The game will assign one play as "X" and one person of "O".
+If you would like to play the game in single player game you will have to run the Main.py and then enter the setting menu and select single player against AI. This will allow you to play the game against offine AI's. 
 
 How do i play against an AI?
 After running the Main.py file go into the settings menu from the main menu and click the box until it says that you will play against AI.
