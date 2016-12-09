@@ -9,13 +9,13 @@ class user_interface:
 		self.ai_diff = "easy"
 		self.mode_i = 0
 		self.ai_diff_i = 0
-		self.font = pygame.font.SysFont("monospace", 80)
-		self.font2 = pygame.font.SysFont("Verdana", 35)
+		self.font = pygame.font.SysFont("monospace", 80) #crosses and naughts font
+		self.font2 = pygame.font.SysFont("Verdana", 35) #Menu fonts
 		self.font3 = pygame.font.SysFont("Verdana", 25)
 
 	def draw_menu(self, display):
 		"""Function in charge of drawing the main menu. The display input uses a value set in Main.py ( __init__ function) for creating the game window. To actually draw everything, a for loop and
-			a list with all the values used to create lines is used to draw all the different lines that make up the "buttons" (The same is done in all other functions in this module)"""   
+		a list with all the values used to create lines is used to draw all the different lines that make up the "buttons" (The same is done in all other functions in this module where deemed useful)"""   
 
 		self.display = display
 		self.display.fill([255,255,255])
@@ -30,7 +30,7 @@ class user_interface:
 
 		drawList = [[[0,0,0], (100, 200), (300, 200), (3)], [[0,0,0], (100, 200), (100, 250), (3)], [[0,0,0], (100, 250), (300, 250), (3)], [[0,0,0], (300, 200), (300, 250), (3)], 
 		[[0,0,0], (100, 300), (300, 300), (3)], [[0,0,0], (100, 300), (100, 350), (3)], [[0,0,0], (100, 350), (300, 350), (3)], [[0,0,0], (100, 350), (300, 350), (3)], [[0,0,0], (300, 300), (300, 350), (3)],
-		[[0,0,0], (100, 400), (300, 400), (3)], [[0,0,0], (100, 400), (100, 450), (3)], [[0,0,0], (100, 450), (300, 450), (3)], [[0,0,0], (300, 400), (300, 450), (3)]]
+		[[0,0,0], (100, 400), (300, 400), (3)], [[0,0,0], (100, 400), (100, 450), (3)], [[0,0,0], (100, 450), (300, 450), (3)], [[0,0,0], (300, 400), (300, 450), (3)]] #line coordinates
 				
 		for num in range(0, 13):
 			self.draw_line(drawList[num])
@@ -52,11 +52,12 @@ class user_interface:
 		self.display.blit(exit_label, (70,510))
 
 		drawList = [[[0,0,0], (100, 170), (300, 170), (3)], [[0,0,0], (100, 170), (100, 320), (3)], [[0,0,0], (100, 320), (300, 320), (3)], [[0,0,0], (300, 170), (300, 320), (3)], [[0,0,0], (50, 500), (150, 500), (3)],
-					[[0,0,0], (50, 500), (50, 550), (3)], [[0,0,0], (50, 550), (150, 550), (3)], [[0,0,0], (150, 500), (150, 550), (3)]]
+		[[0,0,0], (50, 500), (50, 550), (3)], [[0,0,0], (50, 550), (150, 550), (3)], [[0,0,0], (150, 500), (150, 550), (3)]] #line coordinates
 
 		for num in range(0, 8):
 			self.draw_line(drawList[num])
 
+                #Game mode switcher
 		if self.mode == "human":
 			option_local_label = self.font3.render(("Player (local)"), 1, [0,0,0])
 			self.display.blit(option_local_label, (123,265))
@@ -71,11 +72,12 @@ class user_interface:
 			diff_label = self.font3.render(("AI Difficulty"), 1, [0,0,0])
 			self.display.blit(diff_label, (130,370))
 
-			pygame.draw.line(self.display,([0,0,0]),(100,400),(300,400), (3))
-			pygame.draw.line(self.display,([0,0,0]),(100,400),(100,450), (3))
+			pygame.draw.line(self.display,([0,0,0]),(100,400),(300,400), (3)) #This is why we had to make it use a for loop 
+			pygame.draw.line(self.display,([0,0,0]),(100,400),(100,450), (3)) #as otherwise this module would just have giant blocks of code like this
 			pygame.draw.line(self.display,([0,0,0]),(100,450),(300,450), (3))
 			pygame.draw.line(self.display,([0,0,0]),(300,400),(300,450), (3))
 
+                        #AI difficulty switcher
 			if self.ai_diff == "easy":
 				easy_ai_label = self.font3.render(("Easy"), 1, [0,0,0])
 				self.display.blit(easy_ai_label, (170,410))
@@ -96,7 +98,7 @@ class user_interface:
 		drawList = [[[0,0,0], (50, 50), (350, 50), (5)], [[0,0,0], (50, 150), (350, 150), (5)], [[0,0,0], (50, 250), (350, 250), (5)], [[0,0,0], (50, 350), (350, 350), (5)], [[0,0,0], (50, 50), (50, 350), (5)],
 		[[0,0,0], (150, 50), (150, 350), (5)], [[0,0,0], (250, 50), (250, 350), (5)], [[0,0,0], (350, 50), (350, 350), (5)], [[0,0,0], (230, 370), (380, 370), (1)], [[0,0,0], (230, 370), (230, 415), (1)],
 		[[0,0,0], (230, 415), (380, 415), (1)], [[0,0,0], (380, 370), (380, 415), (1)], [[0,0,0], (50,500),(150,500), (3)], [[0,0,0], (50,500),(50,550), (3)], [[0,0,0], (50,550),(150,550), (3)],
-		[[0,0,0], (150,500),(150,550), (3)]]
+		[[0,0,0], (150,500),(150,550), (3)]] #line coordinates
 
 		for num in range(0, 16):
 			self.draw_line(drawList[num])
