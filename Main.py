@@ -117,7 +117,7 @@ class Main:
                         else:
                             pass
 
-            if self.functions.reset_game(x,y) == True and self.ui.mode != "muiltiplayer":
+            if self.functions.reset_game(x,y) == True and self.ui.mode != "multiplayer":
                 self.display.fill([255,255,255])
                 self.ui.draw_grid()
 
@@ -131,6 +131,7 @@ class Main:
             if self.client.last_message != None:
                 if self.client.last_message[0] == "Draw":
                     self.functions.take_turn(self.client.last_message[2], self.client.last_message[1])
+                    self.win_line()
                 
                 elif self.client.last_message[0] == "Reset":
                     if self.functions.reset_game(300, 400) == True:
@@ -138,7 +139,6 @@ class Main:
                         self.ui.draw_grid()
                         self.client.last_message = None
 
-        self.win_line()
 
 
         lst = [(75, 55), (175, 55), (275, 55), (75, 155), (175, 155),\

@@ -19,6 +19,7 @@ Next you will need to run the Main.py file twice to create two instances of the 
 You will then need to go into the settings menu and choose player vs player(online) this will connect you to the server.
 When two people have connected to the server player 1 will be able to take thier turn. 
 
+Debuggging - The debugging of the game was done by James and Goncalo during the A.L.L lessons. 
 
 Known Bugs:
 1. When playing the game in multiplayer mode if there is moves on the display when you press the back button it will still display the "X" and "O" counters on the screen.
